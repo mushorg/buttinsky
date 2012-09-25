@@ -1,6 +1,8 @@
 # Code: https://github.com/rep/evnet
 # Doc: https://github.com/rep/evnet
 
+# Example from here: https://github.com/rep/evnet/blob/master/examples/evnetcat.py
+
 from evnet import PlainClientConnection, loop, unloop
 
 class Client(object):

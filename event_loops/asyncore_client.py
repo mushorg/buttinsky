@@ -1,5 +1,7 @@
 # Doc: http://docs.python.org/library/asyncore.html
 
+# Example from here: http://blog.doughellmann.com/2009/03/pymotw-asyncore.html
+
 import asyncore
 import socket
 from cStringIO import StringIO
