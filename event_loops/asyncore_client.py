@@ -1,20 +1,18 @@
 # Doc: http://docs.python.org/library/asyncore.html
 
-# Example from here: http://blog.doughellmann.com/2009/03/pymotw-asyncore.html
-
 import asyncore
 import socket
-from cStringIO import StringIO
+
 
 class Client(asyncore.dispatcher):
 
-    def __init__(self, ip, port):
+    def __init__(self, protocol, settings):
+        self.protocol = protocol()
         asyncore.dispatcher.__init__(self)
-        self.write_buffer = ''
-        self.read_buffer = StringIO()
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        address = (ip, port)
-        self.connect(address)
+        self.connect((settings["host"], settings["port"]))
+        self.out_buffer = settings["hello"]
+        self.in_buffer = ""
 
     def handle_connect(self):
         pass
@@ -22,26 +20,19 @@ class Client(asyncore.dispatcher):
     def handle_close(self):
         self.close()
 
+    def handle_read(self):
+        self.in_buffer += self.recv(8192)
+        self.in_buffer, messages = self.protocol.parse_msg(self.in_buffer)
+        for msg in messages:
+            self.out_buffer += self.protocol.handle_message(msg)
+
     def writable(self):
-        is_writable = (len(self.write_buffer) > 0)
-        if is_writable:
-            pass
-        return is_writable
-    
-    def readable(self):
-        return True
+        return (len(self.out_buffer) > 0)
 
     def handle_write(self):
-        sent = self.send(self.write_buffer)
-        self.write_buffer = self.write_buffer[sent:]
+        sent = self.send(self.out_buffer)
+        self.out_buffer = self.out_buffer[sent:]
 
-    def handle_read(self):
-        data = self.recv(8192)
-        self.read_buffer.write(data)
-
-if __name__ == '__main__':
-    clients = [
-        Client('', 80),
-        Client('', 80),
-        ]
-    asyncore.loop() 
+if __name__ == "__main__":
+    client = Client(None, None)
+    asyncore.loop()
