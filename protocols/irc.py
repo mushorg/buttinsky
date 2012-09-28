@@ -1,7 +1,17 @@
+#!/usr/bin/env python
+# Copyright (C) 2012 Buttinsky Developers.
+# See 'COPYING' for copying permission.
+
+
 class IRCProtocol(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, net_settings):
+        self.settings = {
+                  "host": net_settings["host"],
+                  "port": net_settings.as_int("port"),
+                  "channel": net_settings["channel"],
+                  "nick": net_settings["nick"],
+                  }
 
     def parse_msg(self, data):
         left = ""
@@ -34,7 +44,7 @@ class IRCProtocol(object):
     def handle_message(self, msg):
         if "command" in msg:
             if msg["command"] == "001":
-                return "JOIN #glasbot\r\n"
+                return "JOIN %s\r\n" % self.settings["channel"]
             if msg["command"] == "PING":
                 return "PONG %s\r\n" % msg["args"][0]
         return ""
