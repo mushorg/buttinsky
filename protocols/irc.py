@@ -15,7 +15,7 @@ class IRCProtocol(object):
 
     def parse_msg(self, data):
         left = ""
-        if not data:
+        if not data or "\r\n" not in data:
             return "", []
         if not data.endswith("\r\n"):
             data, left = data.rsplit("\r\n", 1)
@@ -38,7 +38,6 @@ class IRCProtocol(object):
                     message["args"] = msg.split()
                 message["command"] = message["args"].pop(0)
                 messages.append(message)
-                print(message)
         return left, messages
 
     def handle_message(self, msg):

@@ -2,11 +2,9 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
-import asyncore
-
 from configobj import ConfigObj
 
-from event_loops import asyncore_client
+from event_loops import gevent_client
 from protocols import irc
 
 buttinsky_config = ConfigObj("conf/buttinsky.cfg")
@@ -26,5 +24,4 @@ if __name__ == "__main__":
                                            net_settings["nick"],
                                            )
     net_settings["hello"] = set_nick + set_user
-    client = asyncore_client.Client(irc.IRCProtocol, net_settings)
-    asyncore.loop()
+    client = gevent_client.Client(irc.IRCProtocol, net_settings)
