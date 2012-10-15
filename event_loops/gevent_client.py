@@ -15,7 +15,7 @@ class TCP(object):
         self.iqueue = queue.Queue()
         self.oqueue = queue.Queue()
         self.oqueue.put(net_settings["hello"])
-        self.host = net_settings["host"],
+        self.host = net_settings["host"]
         self.port = net_settings.as_int("port")
         self._socket = self._create_socket()
 
