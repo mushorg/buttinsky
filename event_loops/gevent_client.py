@@ -5,18 +5,18 @@
 
 import gevent
 
+from stack import *
 from gevent import socket, queue
 
 
 class TCP(object):
-    def __init__(self, net_settings):
+    def __init__(self, host, port):
         self._ibuffer = ''
         self._obuffer = ''
         self.iqueue = queue.Queue()
         self.oqueue = queue.Queue()
-        self.oqueue.put(net_settings["hello"])
-        self.host = net_settings["host"]
-        self.port = net_settings.as_int("port")
+        self.host = host
+        self.port = int(port)
         self._socket = self._create_socket()
 
     def _create_socket(self):
@@ -50,33 +50,48 @@ class TCP(object):
 
 
 class Client(object):
-    def __init__(self, protocol, net_settings):
-        self.protocol = protocol(net_settings)
+    def __init__(self, host, port):
         self.lines = queue.Queue()
-        self._connect(net_settings)
+        self.host = host
+        self.port = port
+        self.layer1 = None
+
+    def setLayer1(self, layer1):
+        self.layer1 = layer1
+       
+    def _create_connection(self):
+        return TCP(self.host, self.port)
+
+    def connect(self):
+        self.conn = self._create_connection()
+        gevent.spawn(self.conn.connect)
         self._event_loop()
 
-    def _create_connection(self, net_settings):
-        return TCP(net_settings)
-
-    def _connect(self, net_settings):
-        self.conn = self._create_connection(net_settings)
-        gevent.spawn(self.conn.connect)
-
-    def _disconnect(self):
+    def disconnect(self):
         self.conn.disconnect()
 
-    def _send(self, s):
+    def queue(self, msg):
+        self.conn.iqueue.put(msg)
+
+    def send(self, s):
         self.conn.oqueue.put(s)
 
     def _event_loop(self):
         while True:
             line = self.conn.iqueue.get()
-            data, messages = self.protocol.parse_msg(line)
-            if len(data) > 0:
-                self.conn.iqueue.put(data)
-            if len(messages) > 0:
-                print messages
-                self.lines.put(messages)
-                for msg in messages:
-                    self._send(self.protocol.handle_message(msg))
+            if self.layer1 != None:
+                self.layer1.receive(Message(line))
+
+class Layer1(LayerPlugin):
+
+    def __init__(self, client):
+        self.client = client
+
+    def receive(self, msg):
+        return msg
+
+    def transmit(self, msg):
+        if len(msg.left) > 0:
+            self.client.queue(msg.left)
+        if len(msg.data) > 0:
+            self.client.send(msg.data)
