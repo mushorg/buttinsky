@@ -3,12 +3,14 @@
 # See 'COPYING' for copying permission.
 
 from configobj import ConfigObj
+
 from event_loops import gevent_client
+
 from protocols import irc
 from behaviours import simple_response
 from logs import simple_log
 
-from stack import *
+from stack import Layer
 
 buttinsky_config = ConfigObj("conf/buttinsky.cfg")
 
@@ -28,13 +30,13 @@ if __name__ == "__main__":
                                            )
     net_settings["hello"] = set_nick + set_user
 
-    client = gevent_client.Client(net_settings["host"], 
-                                  net_settings["port"])  
+    client = gevent_client.Client(net_settings["host"],
+                                  net_settings["port"])
 
     # layer1 <-> log <-> protocol <-> behaviour
     protocol = Layer(irc.IRCProtocol())
     protocol.settings(net_settings)
-    layer1 = Layer(gevent_client.Layer1(client))    
+    layer1 = Layer(gevent_client.Layer1(client))
     response = Layer(simple_response.SimpleResponse())
     log = Layer(simple_log.SimpleLog(), layer1, protocol)
 
@@ -43,5 +45,5 @@ if __name__ == "__main__":
     protocol.setUpper(response)
     layer1.setUpper(log)
 
-    client.setLayer1(layer1)    
+    client.setLayer1(layer1)
     client.connect()

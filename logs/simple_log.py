@@ -2,7 +2,8 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
-from stack import *
+from stack import LayerPlugin
+
 
 class SimpleLog(LayerPlugin):
 

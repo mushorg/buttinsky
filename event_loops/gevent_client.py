@@ -4,9 +4,9 @@
 # Example from here: https://gist.github.com/1506694
 
 import gevent
-
-from stack import *
 from gevent import socket, queue
+
+from stack import LayerPlugin, Message
 
 
 class TCP(object):
@@ -58,7 +58,7 @@ class Client(object):
 
     def setLayer1(self, layer1):
         self.layer1 = layer1
-       
+
     def _create_connection(self):
         return TCP(self.host, self.port)
 
@@ -81,6 +81,7 @@ class Client(object):
             line = self.conn.iqueue.get()
             if self.layer1 != None:
                 self.layer1.receive(Message(line))
+
 
 class Layer1(LayerPlugin):
 
