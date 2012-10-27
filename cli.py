@@ -2,14 +2,18 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
-import cmd, sys
+import cmd
+import sys
+
 from configobj import ConfigObj
+
 from event_loops import gevent_client
+
 from protocols import irc
 from behaviours import simple_response
 from logs import simple_log
 
-from stack import *
+from stack import Layer
 
 
 class CLI(cmd.Cmd):
@@ -54,7 +58,6 @@ class CLI(cmd.Cmd):
 
         client.setLayer1(layer1)
         client.connect()
-
 
     def do_exit(self, arg):
         """
