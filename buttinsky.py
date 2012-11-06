@@ -22,7 +22,7 @@ class Buttinsky(object):
 
 
 if __name__ == "__main__":
-    net_settings = ConfigObj("settings/template.set")
+    net_settings = ConfigObj("settings/template.set", _inspec=True)
     set_nick = "NICK %s\r\n" % net_settings["nick"]
     set_user = "USER %s %s bla :%s\r\n" % (net_settings["nick"],
                                            net_settings["host"],

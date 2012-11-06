@@ -22,7 +22,7 @@ class CLI(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.prompt = ">> "
         self.intro = "\nType 'help' or '?' for a list of commands\n"
-        self.config = ConfigObj("settings/template.set")
+        self.config = ConfigObj("settings/template.set", _inspec=True)
 
     def do_monitor(self, arg):
         """
