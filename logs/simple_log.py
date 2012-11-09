@@ -10,12 +10,17 @@ from modules import logging_handler
 class SimpleLog(LayerPlugin):
 
     def receive(self, msg):
-        print "Log recvd:\n" + msg.data
+        self.log(msg.data)
         return msg
 
     def transmit(self, msg):
         if len(msg.data) > 0:
-            loggers = logging_handler.get_loggers()
-            for logger in loggers:
-                logger.insert(msg.data)
+            self.log(msg.data)
         return msg
+
+    def log(self, msg):
+        loggers = logging_handler.get_loggers()
+        print loggers
+        for logger in loggers:
+            print "found logger"
+            logger.insert(msg)

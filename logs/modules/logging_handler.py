@@ -20,12 +20,12 @@ import os
 from reporting.base_logger import BaseLogger
 
 
-def _get_logger_names(path='modules/'):
+def _get_logger_names(path='logs/modules/reporting/'):
     names = os.listdir(path)
     for name in reversed(names):
         if (name == 'base_logger.py' or name == 'file_logger.py'
-                or name == 'hp_feed.py' or name == 'print_logger.py'
-                or ".pyc" in name or name == '__init__.py'):
+                or name == 'hp_feed.py' or ".pyc" in name 
+                or name == '__init__.py'):
             names.remove(name)
     return names
 
