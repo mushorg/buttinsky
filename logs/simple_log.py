@@ -4,6 +4,8 @@
 
 from stack import LayerPlugin
 
+from modules import logging_handler
+
 
 class SimpleLog(LayerPlugin):
 
@@ -13,5 +15,7 @@ class SimpleLog(LayerPlugin):
 
     def transmit(self, msg):
         if len(msg.data) > 0:
-            print "Log transmit:\n" + msg.data
+            loggers = logging_handler.get_loggers()
+            for logger in loggers:
+                logger.insert(msg.data)
         return msg
