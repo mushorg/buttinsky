@@ -15,7 +15,7 @@ class ModuleImporter(object):
         names = os.listdir(path)
         for name in reversed(names):
             if (name == 'base_logger.py' or ".pyc" in name
-                    or name == '__init__.py'):
+                    or name == 'hpfeeds.py' or name == '__init__.py'):
                 names.remove(name)
         return names
 
