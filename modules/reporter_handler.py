@@ -42,6 +42,8 @@ class ReporterHander(LayerPlugin):
 
     def __init__(self):
         self.reporting_handler = ModuleImporter()
+        self.loggers = self.reporting_handler.get_loggers()
+        print self.loggers
 
     def receive(self, msg):
         self.log(msg.data)
@@ -53,8 +55,5 @@ class ReporterHander(LayerPlugin):
         return msg
 
     def log(self, msg):
-        loggers = self.reporting_handler.get_loggers()
-        print loggers
-        for logger in loggers:
-            print "found logger"
+        for logger in self.loggers:
             logger.insert(msg)
