@@ -2,13 +2,16 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
+import signal
+
+import gevent
+
 from configobj import ConfigObj
 
 from event_loops import gevent_client
-
 from protocols import irc
-from behaviours import simple_response
-from logs import simple_log
+from behaviors import simple_response
+from modules import reporter_handler
 
 from stack import Layer
 
@@ -22,7 +25,8 @@ class Buttinsky(object):
 
 
 if __name__ == "__main__":
-    net_settings = ConfigObj("settings/template.set", _inspec=True)
+    #gevent.signal(signal.SIGQUIT, gevent.shutdown)
+    net_settings = ConfigObj("settings/freenode.set", _inspec=True)
     set_nick = "NICK %s\r\n" % net_settings["nick"]
     set_user = "USER %s %s bla :%s\r\n" % (net_settings["nick"],
                                            net_settings["host"],
@@ -33,17 +37,17 @@ if __name__ == "__main__":
     client = gevent_client.Client(net_settings["host"],
                                   net_settings["port"])
 
-    # layer1 <-> log <-> protocol <-> behaviour
-    protocol = Layer(irc.IRCProtocol())
-    protocol.settings(net_settings)
-    layer1 = Layer(gevent_client.Layer1(client))
-    response = Layer(simple_response.SimpleResponse())
-    log = Layer(simple_log.SimpleLog(), layer1, protocol)
+    # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
+    layer_network = Layer(gevent_client.Layer1(client))
+    layer_log = Layer(reporter_handler.ReporterHander(), layer_network)
+    layer_protocol = Layer(irc.IRCProtocol(), layer_log)
+    layer_behavior = Layer(simple_response.SimpleResponse(), layer_protocol)
 
-    response.setLower(protocol)
-    protocol.setLower(log)
-    protocol.setUpper(response)
-    layer1.setUpper(log)
+    layer_protocol.settings(net_settings)
 
-    client.setLayer1(layer1)
+    layer_log.setUpper(layer_protocol)
+    layer_network.setUpper(layer_log)
+    layer_protocol.setUpper(layer_behavior)
+
+    client.setLayer1(layer_network)
     client.connect()
