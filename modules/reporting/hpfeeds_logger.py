@@ -1,4 +1,4 @@
-import hpfeeds
+from modules.util import hpfeeds
 
 from configobj import ConfigObj
 
