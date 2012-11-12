@@ -16,12 +16,14 @@ class HPFeedsLogger(BaseLogger):
 
         def on_message(ident, chan, content):
             print content
-
-        self.hpc = hpfeeds.new(self.buttinsky_config["hpfeeds"]["host"],
-                               self.buttinsky_config["hpfeeds"]["port"],
-                               self.buttinsky_config["hpfeeds"]["ident"],
-                               self.buttinsky_config["hpfeeds"]["secret"])
-        self.hpc.connect()
+        try:
+            self.hpc = hpfeeds.new(self.buttinsky_config["hpfeeds"]["host"],
+                                   self.buttinsky_config["hpfeeds"]["port"],
+                                   self.buttinsky_config["hpfeeds"]["ident"],
+                                   self.buttinsky_config["hpfeeds"]["secret"])
+            self.hpc.connect()
+        except KeyError:
+            pass
 
     def insert(self, data):
         for chaninfo in self.buttinsky_config["hpfeeds"]["channels"]:

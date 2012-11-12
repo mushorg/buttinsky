@@ -43,7 +43,6 @@ class ReporterHander(LayerPlugin):
     def __init__(self):
         self.reporting_handler = ModuleImporter()
         self.loggers = self.reporting_handler.get_loggers()
-        print self.loggers
 
     def receive(self, msg):
         self.log(msg.data)
