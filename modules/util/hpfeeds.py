@@ -2,10 +2,8 @@ import sys
 import struct
 import socket
 import hashlib
-import logging
 import time
 
-logger = logging.getLogger('pyhpfeeds')
 
 OP_ERROR = 0
 OP_INFO = 1
@@ -63,7 +61,8 @@ class FeedException(Exception):
 
 
 class HPC(object):
-    def __init__(self, host, port, ident, secret, timeout=3, reconnect=True, sleepwait=20):
+    def __init__(self, host, port, ident,
+                 secret, timeout=3, reconnect=True, sleepwait=20):
         self.host, self.port = host, port
         self.ident, self.secret = ident, secret
         self.timeout = timeout
@@ -81,11 +80,9 @@ class HPC(object):
                 self.connect()
                 break
             except FeedException, e:
-                logger.warn('FeedException while connecting: {0}'.format(e))
                 time.sleep(self.sleepwait)
 
     def connect(self):
-        logger.info('connecting to {0}:{1}'.format(self.host, self.port))
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.settimeout(self.timeout)
         try:
@@ -101,9 +98,9 @@ class HPC(object):
         for opcode, data in self.unpacker:
             if opcode == OP_INFO:
                 rest = buffer(data, 0)
-                name, rest = rest[1:1 + ord(rest[0])], buffer(rest, 1 + ord(rest[0]))
+                name = rest[1:1 + ord(rest[0])]
+                rest = buffer(rest, 1 + ord(rest[0]))
                 rand = str(rest)
-                logger.debug('info message name: {0}, rand: {1}'.format(name, repr(rand)))
                 self.brokername = name
                 self.s.send(msgauth(rand, self.ident, self.secret))
                 break
@@ -125,8 +122,10 @@ class HPC(object):
                 for opcode, data in self.unpacker:
                     if opcode == OP_PUBLISH:
                         rest = buffer(data, 0)
-                        ident, rest = rest[1:1 + ord(rest[0])], buffer(rest, 1 + ord(rest[0]))
-                        chan, content = rest[1:1 + ord(rest[0])], buffer(rest, 1 + ord(rest[0]))
+                        ident = rest[1:1 + ord(rest[0])]
+                        rest = buffer(rest, 1 + ord(rest[0]))
+                        chan = rest[1:1 + ord(rest[0])]
+                        content = buffer(rest, 1 + ord(rest[0]))
                         message_callback(str(ident), str(chan), content)
                     elif opcode == OP_ERROR:
                         error_callback(data)
@@ -155,8 +154,9 @@ class HPC(object):
         try:
             self.s.close()
         except:
-            logger.warn('Socket exception when closing.')
+            raise
 
 
-def new(host=None, port=10000, ident=None, secret=None, timeout=3, reconnect=True, sleepwait=20):
+def new(host=None, port=10000, ident=None,
+        secret=None, timeout=3, reconnect=True, sleepwait=20):
     return HPC(host, port, ident, secret, timeout, reconnect)
