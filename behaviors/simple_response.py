@@ -7,6 +7,9 @@ from stack import LayerPlugin, Message
 
 class SimpleResponse(LayerPlugin):
 
+    def settings(self, setting):
+        pass
+
     def receive(self, msgs):
         messages = []
         for m in msgs.data:

@@ -38,11 +38,14 @@ class ModuleImporter(object):
             return loggers
 
 
-class ReporterHander(LayerPlugin):
+class ReporterHandler(LayerPlugin):
 
     def __init__(self):
         self.reporting_handler = ModuleImporter()
         self.loggers = self.reporting_handler.get_loggers()
+
+    def settings(self, setting):
+        pass
 
     def receive(self, msg):
         self.log(msg.data)
