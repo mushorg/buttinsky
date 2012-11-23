@@ -27,7 +27,6 @@ def raw_input(message):
     select.select([sys.stdin], [], [])
     return sys.stdin.readline()
 
-
 class MonitorSpawner(object):
 
     def __init__(self, queue):
@@ -104,11 +103,28 @@ class CLI(object):
         _m = MonitorSpawner(q)
         gevent.spawn(_m.work)
 
+        print "    ____        __  __  _            __        "
+        print "   / __ )__  __/ /_/ /_(_)___  _____/ /____  __"
+        print "  / __  / / / / __/ __/ / __ \/ ___/ //_/ / / /"
+        print " / /_/ / /_/ / /_/ /_/ / / / (__  ) ,< / /_/ / "
+        print "/_____/\__,_/\__/\__/_/_/ /_/____/_/|_|\__, /  "
+        print "                                      /____/   "
+        print "Buttinsky Command line Interface\nType 'help' for a list of commands\n\n"
+
         while True:
             line = raw_input("")
             args = line.split(' ')
+            cmd = args[0].strip()
 
-            if args[0] == 'monitor':
+            if cmd == 'help':
+                print "\tcreate id {config} - create configuration based on JSON\n\t" \
+                      "load id filename - load filename\n\t" \
+                      "status - show all running monitors\n\t" \
+                      "stop id - stop monitor specified id\n\t" \
+                      "restart id - restart monitor with specified id\n\t" \
+                      "delete id - delete monitor with specified id\n"
+
+            elif cmd == 'monitor':
                 arg = 'settings/' + args[1].strip() + '.set'
                 try:
                     net_settings = ConfigObj(arg,
@@ -120,7 +136,7 @@ class CLI(object):
                 if len(net_settings) > 0:
                     q.put(net_settings)
 
-            if args[0] == 'add':
+            elif cmd == 'add':
                 config = ConfigObj(list_values=True, _inspec=True)
                 config.filename = 'settings/' + args[1] + '.set'
                 setting = {}
@@ -133,8 +149,14 @@ class CLI(object):
                 for key, value in setting.iteritems():
                     config[key] = value
                 config.write()
+           
+            elif cmd == '':
+                pass
 
+            else:
+                print "Unkown command: " + cmd + "\n"
 
 if __name__ == "__main__":
     g = gevent.spawn(CLI().cmdloop)
     g.join()
+
