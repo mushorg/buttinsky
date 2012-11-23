@@ -4,6 +4,7 @@
 
 import sys
 import ast
+import curses
 
 from configobj import ConfigObj
 from event_loops import gevent_client
@@ -92,7 +93,6 @@ class MonitorSpawner(object):
             response.settings(settings)
             return response
 
-
 class CLI(object):
 
     def __init__(self):
@@ -109,7 +109,7 @@ class CLI(object):
         print " / /_/ / /_/ / /_/ /_/ / / / (__  ) ,< / /_/ / "
         print "/_____/\__,_/\__/\__/_/_/ /_/____/_/|_|\__, /  "
         print "                                      /____/   "
-        print "Buttinsky Command line Interface\nType 'help' for a list of commands\n\n"
+        print "\033[1;30mButtinsky Command line Interface\nType 'help' for a list of commands\033[0m\n\n"
 
         while True:
             line = raw_input("")
@@ -117,19 +117,17 @@ class CLI(object):
             cmd = args[0].strip()
 
             if cmd == 'help':
-                print "\tcreate id {config} - create configuration based on JSON\n\t" \
-                      "load id filename - load filename\n\t" \
-                      "status - show all running monitors\n\t" \
-                      "stop id - stop monitor specified id\n\t" \
-                      "restart id - restart monitor with specified id\n\t" \
-                      "delete id - delete monitor with specified id\n"
+                print "\t\033[1;30mcreate id {config}\033[0m - create configuration based on JSON\n\t" \
+                      "\033[1;30mload id filename\033[0m - load filename\n\t" \
+                      "\033[1;30mstatus\033[0m - show all running monitors\n\t" \
+                      "\033[1;30mstop id\033[0m - stop monitor specified id\n\t" \
+                      "\033[1;30mrestart id\033[0m - restart monitor with specified id\n\t" \
+                      "\033[1;30mdelete id\033[0m - delete monitor with specified id\n"
 
-            elif cmd == 'monitor':
+            elif cmd == 'load':
                 arg = 'settings/' + args[1].strip() + '.set'
                 try:
-                    net_settings = ConfigObj(arg,
-                                             list_values=True,
-                                             _inspec=True)
+                    net_settings = ConfigObj(arg, list_values=True, _inspec=True)
                 except KeyError:
                     print "Error: Unknown setting " + arg
                     continue
