@@ -2,159 +2,157 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
+import cmd
 import sys
-import ast
-import curses
-
-from configobj import ConfigObj
-from event_loops import gevent_client
-from gevent import queue
-
-from protocols import irc
-from behaviors import simple_response
-from modules import reporter_handler
-from stack import Layer
-
-import gevent.pool
-group = gevent.pool.Group()
-
-import select
-from gevent.monkey import patch_all
-patch_all(os=True, select=True)
+import string
+import xmlrpclib
+import getopt
 
 
-def raw_input(message):
-    sys.stdout.write(message)
-    select.select([sys.stdin], [], [])
-    return sys.stdin.readline()
+class CLI(cmd.Cmd):
 
-class MonitorSpawner(object):
+    def __init__(self, connection):
+        cmd.Cmd.__init__(self)
+        self.prompt = '\033[1;30m>>\033[0m '
+        self.conn = connection
+        self.doc_header = 'Available commands (type help <topic>):'
+        self.undoc_header = ''
+        self.intro = "\
+            ____        __  __  _            __        \n\
+           / __ )__  __/ /_/ /_(_)___  _____/ /____  __\n\
+          / __  / / / / __/ __/ / __ \/ ___/ //_/ / / /\n\
+         / /_/ / /_/ / /_/ /_/ / / / (__  ) ,< / /_/ / \n\
+        /_____/\__,_/\__/\__/_/_/ /_/____/_/|_|\__, /  \n\
+                                              /____/   \n\
+        \033[1;30mButtinsky Command Line Interface\n\tType 'help' for a list of commands\033[0m\n\n"
 
-    def __init__(self, queue):
-        self.queue = queue
-
-    def work(self):
+    def do_create(self, arg):
+        """
+        \033[1;30msyntax: create <id> <conf> -- create new configuration from JSON encoded string and identify it using id\033[0m
+        """
+        args = arg.split(' ')
+        
         try:
-            g = gevent.spawn(self.listen)
-            g.join()
-        finally:
-            g.kill()
+            ret = self.conn.create(args[0], args[1])
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-    def listen(self):
-        while True:
-            net_settings = self.queue.get()
+    def do_echo(self, arg):
+       """
+       \033[1;30msyntax: echo <message> -- send message to echo function to test non-blocking functionality\033[0m
+       """
+       try:
+           ret = self.conn.echo(arg)
+           print ret
+       except xmlrpclib.Fault as err:
+           print "Operation denied\n"   
 
-            stackstr = net_settings['stack']
-            brack1 = stackstr.split('[')[1]
-            brack2 = brack1.split(']')[0]
-            li = brack2.split(',')
+    def do_load(self, arg):
+        """
+        \033[1;30msyntax: load <id> <filename> -- load configuration from specified filename and identify it using id\033[0m
+        """
+        args = arg.split(' ')
+        try:
+            ret = self.conn.load(args[0], args[1])
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-            stack = None
-            for i in li:
-                plugins = self._getPlugin(i.strip(), net_settings)
-                if stack == None:
-                    stack = list()
-                if isinstance(plugins, list):
-                    for plug in plugins:
-                        stack.append(plug)
-                else:
-                    stack.append(plugins)
+    def do_status(self, arg):
+        """
+        \033[1;30msyntax: status -- show all running monitors\033[0m
+        """
+        try:
+            ret = self.conn.status()
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-            previous = None
-            for i in stack[1:]:
-                if previous != None:
-                    previous.setUpper(i)
-                i.setLower(previous)
-                previous = i
+    def do_stop(self, arg):
+        """
+        \033[1;30msyntax: stop <id> -- stop execution of monitor identified by id\033[0m
+        """
+        try:
+            ret = self.conn.stop(arg)
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-            group.spawn(stack[0].connect)
+    def do_restart(self, arg):
+        """
+        \033[1;30msyntax: restart <id> -- restart execution of monitor identified by id\033[0m
+        """
+        try:
+            ret = self.conn.restart(arg)
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-    def _getPlugin(self, name, settings):
+    def do_delete(self, arg):
+        """
+        \033[1;30msyntax: delete <id> -- delete configuration of monitor identified by id\033[0m
+        """
+        try:
+            ret = self.conn.delete(arg)
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Operation denied\n"
 
-        if name == "TCP":
-            client = gevent_client.Client(settings["host"],
-                                          settings["port"])
-            layer1 = Layer(gevent_client.Layer1(client))
-            client.setLayer1(layer1)
-            return [client, layer1]
+    def do_quit(self, arg):
+        """
+        \033[1;30msyntax: quit -- exit the client gracefully, Shortcut: 'q'\033[0m
+        """
+        sys.exit(1)
 
-        if name == "LOG":
-            log = Layer(reporter_handler.ReporterHandler())
-            log.settings(settings)
-            return log
+    def help_help(self):
+        print "\t\033[1;30msyntax: help <topic> -- Show help for a particular topic. List all commands if topic is not specified\033[0m"
 
-        if name == "DEFAULT_IRC":
-            protocol = Layer(irc.IRCProtocol())
-            protocol.settings(settings)
-            return protocol
+    def default(self, arg):
+        print "Unknown command: " + arg + "\n"
 
-        if name == "SIMPLE_RESPONSE":
-            response = Layer(simple_response.SimpleResponse())
-            response.settings(settings)
-            return response
+    def emptyline(self):
+        pass
 
-class CLI(object):
+    # shortcuts
+    do_q = do_quit
 
-    def __init__(self):
-        self.stack = None
 
-    def cmdloop(self):
-        q = queue.Queue()
-        _m = MonitorSpawner(q)
-        gevent.spawn(_m.work)
+def usage():
+    print "\nusage: cli.py [-h] [-s server] [-p port]\n\n"\
+          "\t-h\t\tthis help text\n"\
+          "\t-s server\thostname of the server, default: localhost\n"\
+          "\t-p port\t\tport number of the server, default: 8000\n"
 
-        print "    ____        __  __  _            __        "
-        print "   / __ )__  __/ /_/ /_(_)___  _____/ /____  __"
-        print "  / __  / / / / __/ __/ / __ \/ ___/ //_/ / / /"
-        print " / /_/ / /_/ / /_/ /_/ / / / (__  ) ,< / /_/ / "
-        print "/_____/\__,_/\__/\__/_/_/ /_/____/_/|_|\__, /  "
-        print "                                      /____/   "
-        print "\033[1;30mButtinsky Command line Interface\nType 'help' for a list of commands\033[0m\n\n"
+def main():
+    server = "localhost"
+    port = "8000"
 
-        while True:
-            line = raw_input("")
-            args = line.split(' ')
-            cmd = args[0].strip()
-
-            if cmd == 'help':
-                print "\t\033[1;30mcreate id {config}\033[0m - create configuration based on JSON\n\t" \
-                      "\033[1;30mload id filename\033[0m - load filename\n\t" \
-                      "\033[1;30mstatus\033[0m - show all running monitors\n\t" \
-                      "\033[1;30mstop id\033[0m - stop monitor specified id\n\t" \
-                      "\033[1;30mrestart id\033[0m - restart monitor with specified id\n\t" \
-                      "\033[1;30mdelete id\033[0m - delete monitor with specified id\n"
-
-            elif cmd == 'load':
-                arg = 'settings/' + args[1].strip() + '.set'
-                try:
-                    net_settings = ConfigObj(arg, list_values=True, _inspec=True)
-                except KeyError:
-                    print "Error: Unknown setting " + arg
-                    continue
-                if len(net_settings) > 0:
-                    q.put(net_settings)
-
-            elif cmd == 'add':
-                config = ConfigObj(list_values=True, _inspec=True)
-                config.filename = 'settings/' + args[1] + '.set'
-                setting = {}
-
-                try:
-                    setting = ast.literal_eval(' '.join(args[2:]))
-                except SyntaxError:
-                    print "Error in settings"
-                    continue
-                for key, value in setting.iteritems():
-                    config[key] = value
-                config.write()
+    try:                                
+        opts, args = getopt.getopt(sys.argv[1:], "hs:p:")
+    except getopt.GetoptError:          
+        usage()                         
+        sys.exit(2)   
            
-            elif cmd == '':
-                pass
+    for opt, arg in opts:                
+        if opt in ("-h"):      
+            usage()                     
+            sys.exit()                  
+        elif opt in ("-s"):                
+            server = arg                  
+        elif opt in ("-p"): 
+            port = arg
 
-            else:
-                print "Unkown command: " + cmd + "\n"
+    url = "http://" + server + ":" + port + "/"
+    conn = xmlrpclib.ServerProxy(url)
+    try:
+        ret = conn.echo("lets do some echoing")
+    except xmlrpclib.Fault as err:
+        print "Operation denied\n"
+        sys.exit(2)
+
+    CLI(conn).cmdloop()
 
 if __name__ == "__main__":
-    g = gevent.spawn(CLI().cmdloop)
-    g.join()
+    main()
 
