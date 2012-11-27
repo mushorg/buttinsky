@@ -1,4 +1,9 @@
+#!/usr/bin/env python
+# Copyright (C) 2012 Buttinsky Developers.
+# See 'COPYING' for copying permission.
+
 import gevent
+import json
 
 from gevent.server import StreamServer
 from gevent import queue
@@ -14,9 +19,45 @@ from stack import Layer
 import gevent.pool
 group = gevent.pool.Group()
 
-global messageQueue
+
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
+
+@singleton
+class MonitorList(object):
+
+    def __init__(self):
+        self.__list = {}
+
+    def add(self, identifier, stack):
+        self.__list[identifier] = stack
+
+    def get(self, identifier=None):
+        if identifier == None:
+            return self.__list
+        stack = None
+        try:
+            stack = self.__list[identifier]
+        except:
+            pass
+        return stack
+
+    def remove(self, identifier):
+        stack = self.get(identifier)
+        if stack != None:
+            del self.__list[identifier]
+        return stack
 
 class MonitorSpawner(object):
+
+    def __init__(self, queue):
+        self.messageQueue = queue
+        self.ml = MonitorList()
 
     def work(self):
         try:
@@ -27,103 +68,56 @@ class MonitorSpawner(object):
 
     def listen(self):
         while True:
-            net_settings = messageQueue.get()
-
-            stackstr = net_settings['stack']
-            brack1 = stackstr.split('[')[1]
-            brack2 = brack1.split(']')[0]
-            li = brack2.split(',')
-
-            stack = None
-            for i in li:
-                plugins = self._getPlugin(i.strip(), net_settings)
-                if stack == None:
-                    stack = list()
-                if isinstance(plugins, list):
-                    for plug in plugins:
-                        stack.append(plug)
-                else:
-                    stack.append(plugins)
-
-            previous = None
-            for i in stack[1:]:
-                if previous != None:
-                    previous.setUpper(i)
-                i.setLower(previous)
-                previous = i
-
-            group.spawn(stack[0].connect)
-
-    def _getPlugin(self, name, settings):
-
-        if name == "TCP":
-            client = gevent_client.Client(settings["host"],
-                                          settings["port"])
-            layer1 = Layer(gevent_client.Layer1(client))
-            client.setLayer1(layer1)
-            return [client, layer1]
-
-        if name == "LOG":
-            log = Layer(reporter_handler.ReporterHandler())
-            log.settings(settings)
-            return log
-
-        if name == "DEFAULT_IRC":
-            protocol = Layer(irc.IRCProtocol())
-            protocol.settings(settings)
-            return protocol
-
-        if name == "SIMPLE_RESPONSE":
-            response = Layer(simple_response.SimpleResponse())
-            response.settings(settings)
-            return response
+            data = self.messageQueue.get()
+            print "MonitorSpawner: received config"
+            self.ml.add(data[0], data[1])
+            #group.spawn()
 
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from gevent.monkey import patch_all
 patch_all()
 
+class ButtinskyXMLRPCServer(object):
+    
+    def __init__(self, messageQueue):
+        self.ml = MonitorList()
+        self.queue = messageQueue
 
-def load(identifier, config):
-    arg = 'settings/' + config.strip() + '.set'
-    try:
-        net_settings = ConfigObj(arg, list_values=True, _inspec=True)
-        messageQueue.put(net_settings)
-    except KeyError:
-        return -1
-    return identifier
+    def load(self, identifier, filename):
+        json_data = open('settings/' + filename)
+        data = json.load(json_data)
+        config = data["config"]
+        self.queue.put([identifier, config])
+        json_data.close()
+        return "Load command, recv id: " + identifier
 
-def create(identifier, config):
-    return "Create command, recvd id: " + identifier
+    def create(self, identifier, config):
+        data = json.loads(config)
+        config = data["config"]
+        self.queue.put([identifier, config])
+        return "Create command, recvd id: " + identifier
 
-def status():
-    return "Recvd status command"
+    def status(self):
+        return self.ml.get()
 
-def stop(identifier):
-    return "Stop command, recvd id: " + identifier
+    def stop(self, identifier):
+        return "Stop command, recvd id: " + identifier
 
-def restart(identifier):
-    return "Restart command, recvd id: " + identifier
+    def restart(self, identifier):
+        return "Restart command, recvd id: " + identifier
 
-def delete(identifier):
-    return "Delete command, recvd id: " + identifier
+    def delete(self, identifier):
+        return "Delete command, recvd id: " + identifier
 
-def echo(msg):
-    return "Msg recvd: " + msg
+    def echo(self, msg):
+        return "Msg recvd: " + msg
 
 if __name__ == '__main__':
     messageQueue = queue.Queue()
-    gevent.spawn(MonitorSpawner().work)
+    gevent.spawn(MonitorSpawner(messageQueue).work)
     server = SimpleXMLRPCServer(("localhost", 8000))
     print "Listening on port 8000..."
-
-    server.register_function(load, "load")
-    server.register_function(create, "create")
-    server.register_function(status, "status")
-    server.register_function(stop, "stop")
-    server.register_function(restart, "restart")
-    server.register_function(delete, "delete")
-    server.register_function(echo, "echo")
-
+    server.register_instance(ButtinskyXMLRPCServer(messageQueue))
     server.serve_forever()
 

@@ -1,1 +1,6 @@
-# Template botnet setting file
+{"config": {
+  "nick": "NICCCKI",
+  "host": "irc.freenode.net",
+  "port": "6667",
+  "channel":"#testasdfff"
+}}

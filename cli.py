@@ -33,10 +33,11 @@ class CLI(cmd.Cmd):
         args = arg.split(' ')
         
         try:
-            ret = self.conn.create(args[0], args[1])
+            ret = self.conn.create(args[0], ''.join(args[1]))
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: ", 
+            print err
 
     def do_echo(self, arg):
        """
@@ -46,7 +47,7 @@ class CLI(cmd.Cmd):
            ret = self.conn.echo(arg)
            print ret
        except xmlrpclib.Fault as err:
-           print "Operation denied\n"   
+            print "Operation denied: " + err   
 
     def do_load(self, arg):
         """
@@ -57,7 +58,7 @@ class CLI(cmd.Cmd):
             ret = self.conn.load(args[0], args[1])
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: " + err
 
     def do_status(self, arg):
         """
@@ -67,7 +68,8 @@ class CLI(cmd.Cmd):
             ret = self.conn.status()
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: ",
+            print err
 
     def do_stop(self, arg):
         """
@@ -77,7 +79,7 @@ class CLI(cmd.Cmd):
             ret = self.conn.stop(arg)
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: " + err
 
     def do_restart(self, arg):
         """
@@ -87,7 +89,7 @@ class CLI(cmd.Cmd):
             ret = self.conn.restart(arg)
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: " + err
 
     def do_delete(self, arg):
         """
@@ -97,7 +99,7 @@ class CLI(cmd.Cmd):
             ret = self.conn.delete(arg)
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied\n"
+            print "Operation denied: " + err
 
     def do_quit(self, arg):
         """
@@ -146,9 +148,10 @@ def main():
     url = "http://" + server + ":" + port + "/"
     conn = xmlrpclib.ServerProxy(url)
     try:
-        ret = conn.echo("lets do some echoing")
+        ret = conn.echo("echo")
     except xmlrpclib.Fault as err:
         print "Operation denied\n"
+        print err
         sys.exit(2)
 
     CLI(conn).cmdloop()
