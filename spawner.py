@@ -32,26 +32,30 @@ def singleton(cls):
 class MonitorList(object):
 
     def __init__(self):
-        self.__list = {}
+        self.__stackList = {}
 
-    def add(self, identifier, stack):
-        self.__list[identifier] = stack
+    def addStack(self, identifier, stack):
+        self.__stackList[identifier] = stack
 
-    def get(self, identifier=None):
+    def getStack(self, identifier=None):
         if identifier == None:
-            return self.__list
+            return self.__stackList
         stack = None
         try:
-            stack = self.__list[identifier]
+            stack = self.__stackList[identifier]
         except:
             pass
         return stack
 
-    def remove(self, identifier):
-        stack = self.get(identifier)
+    def removeStack(self, identifier):
+        stack = self.getStack(identifier)
         if stack != None:
-            del self.__list[identifier]
+            del self.__stackList[identifier]
         return stack
+
+CONFIG_MONITOR  = 0
+STOP_MONITOR    = 1
+RESTART_MONITOR = 2
 
 class MonitorSpawner(object):
 
@@ -69,10 +73,27 @@ class MonitorSpawner(object):
     def listen(self):
         while True:
             data = self.messageQueue.get()
-            net_settings = data[1]
+            msg_type = data[0]
+            identifier = data[1]
+
+            if msg_type == STOP_MONITOR:
+                print "MonitorSpawner: received stop"
+                stack = self.ml.removeStack(identifier)
+                if stack != None:
+                    stack.disconnect()
+                continue
+
+            if msg_type == RESTART_MONITOR:
+                print "MonitorSpawner: received restart"
+                stack = self.ml.getStack(identifier)
+                if stack != None:
+                    stack.disconnect()
+                    group.spawn(stack.connect)
+                continue
+
+            
             print "MonitorSpawner: received config"
-            self.ml.add(data[0], data[1])
-    
+            net_settings = data[2]
             client = gevent_client.Client(net_settings["host"],
                                           net_settings["port"])
 
@@ -90,6 +111,7 @@ class MonitorSpawner(object):
 
             client.setLayer1(layer_network)
             group.spawn(client.connect)
+            self.ml.addStack(identifier, client)
 
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
@@ -106,7 +128,7 @@ class ButtinskyXMLRPCServer(object):
         json_data = open('settings/' + filename)
         data = json.load(json_data)
         config = data["config"]
-        self.queue.put([identifier, config])
+        self.queue.put([CONFIG_MONITOR, identifier, config])
         json_data.close()
         return "Load command, recv id: " + identifier
 
@@ -117,12 +139,15 @@ class ButtinskyXMLRPCServer(object):
         return "Create command, recvd id: " + identifier
 
     def status(self):
-        return self.ml.get()
+        return "Status command recvd"
+        #return self.ml.get()
 
     def stop(self, identifier):
+        self.queue.put([STOP_MONITOR, identifier, None])
         return "Stop command, recvd id: " + identifier
 
     def restart(self, identifier):
+        self.queue.put([RESTART_MONITOR, identifier, None])
         return "Restart command, recvd id: " + identifier
 
     def delete(self, identifier):
