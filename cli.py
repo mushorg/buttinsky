@@ -36,7 +36,7 @@ class CLI(cmd.Cmd):
             ret = self.conn.create(args[0], ''.join(args[1]))
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied: ", 
+            print "Command failed: ",
             print err
 
     def do_echo(self, arg):
@@ -47,7 +47,8 @@ class CLI(cmd.Cmd):
            ret = self.conn.echo(arg)
            print ret
        except xmlrpclib.Fault as err:
-            print "Operation denied: " + err   
+            print "Command failed: ",
+            print err 
 
     def do_load(self, arg):
         """
@@ -55,10 +56,10 @@ class CLI(cmd.Cmd):
         """
         args = arg.split(' ')
         try:
-            ret = self.conn.load(args[0], args[1])
-            print ret
+            ret = self.conn.load(args[0], args[1]) 
         except xmlrpclib.Fault as err:
-            print "Operation denied: " + err
+            print "Command failed: ",
+            print err
 
     def do_status(self, arg):
         """
@@ -66,9 +67,16 @@ class CLI(cmd.Cmd):
         """
         try:
             ret = self.conn.status()
-            print ret
+            print "\n\033[1;30mFile\t\tMonitor ID\n====\t\t==========\n\033[0m"
+            for k,v in ret.iteritems():
+                if k == "":
+                    for i in v:
+                        print i + "\tNone"
+                else:
+                    print v + "\t" + k
+            print ""
         except xmlrpclib.Fault as err:
-            print "Operation denied: ",
+            print "Command failed: ",
             print err
 
     def do_stop(self, arg):
@@ -79,7 +87,8 @@ class CLI(cmd.Cmd):
             ret = self.conn.stop(arg)
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied: " + err
+            print "Command failed: ",
+            print err
 
     def do_restart(self, arg):
         """
@@ -89,17 +98,30 @@ class CLI(cmd.Cmd):
             ret = self.conn.restart(arg)
             print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied: " + err
+            print "Command failed: ",
+            print err
+
+    def do_list(self, arg):
+        """
+        \033[1;30msyntax: list <file> -- list contens of file\033[0m
+        """ 
+        try:
+            ret = self.conn.list(arg)
+            print "\n\033[1;30mContents of " + arg + "\033[0m\n"
+            print ret
+        except xmlrpclib.Fault as err:
+            print "Command failed: ",
+            print err
 
     def do_delete(self, arg):
         """
-        \033[1;30msyntax: delete <id> -- delete configuration of monitor identified by id\033[0m
+        \033[1;30msyntax: delete <file> -- delete configuration specified in file\033[0m
         """
         try:
             ret = self.conn.delete(arg)
-            print ret
         except xmlrpclib.Fault as err:
-            print "Operation denied: " + err
+            print "Command failed: ",
+            print err
 
     def do_quit(self, arg):
         """

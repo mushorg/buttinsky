@@ -33,7 +33,10 @@ class IRCProtocol(LayerPlugin):
                            }
                 trailing = []
                 if msg[0] == ":":
-                    message["prefix"], msg = msg[1:].split(" ", 1)
+                    try:
+                        message["prefix"], msg = msg[1:].split(" ", 1)
+                    except ValueError:
+                        pass
                 if msg.find(" :") != -1:
                     msg, trailing = msg.split(" :", 1)
                     message["args"] = msg.split()

@@ -4,6 +4,7 @@
 
 import gevent
 import json
+import os
 
 from gevent.server import StreamServer
 from gevent import queue
@@ -34,12 +35,16 @@ class MonitorList(object):
     def __init__(self):
         self.__stackList = {}
         self.__settingList = {}
+        self.__fileList = {}
 
     def addStack(self, identifier, stack):
         self.__stackList[identifier] = stack
 
     def addSetting(self, identifier, setting):
         self.__settingList[identifier] = setting
+
+    def addFile(self, identifier, filename):
+        self.__fileList[identifier] = filename
 
     def getStack(self, identifier=None):
         if identifier == None:
@@ -61,6 +66,16 @@ class MonitorList(object):
             pass
         return setting
 
+    def getFile(self, identifier=None):
+        if identifier == None:
+            return self.__fileList
+        filename = None
+        try:
+            filename = self.__fileList[identifier]
+        except:
+            pass
+        return filename
+
     def removeStack(self, identifier):
         stack = self.getStack(identifier)
         if stack != None:
@@ -72,6 +87,12 @@ class MonitorList(object):
         if setting != None:
             del self.__settingList[identifier]
         return setting
+
+    def removeFile(self, identifier):
+        filename = self.getFile(identifier)
+        if filename != None:
+            del self.__fileList[identifier]
+        return filename
 
 
 
@@ -98,30 +119,21 @@ class MonitorSpawner(object):
             msg_type = data[0]
             identifier = data[1]
 
-            if msg_type == STOP_MONITOR:
-                print "MonitorSpawner: received stop"
-                stack = self.ml.removeStack(identifier)
-                self.ml.removeSetting(identifier)
-                if stack != None:
-                    stack.disconnect()
-                    group.killone(stack.connect)
-                continue
-
-            if msg_type == RESTART_MONITOR:
-                print "MonitorSpawner: received restart"
+            if msg_type == STOP_MONITOR or msg_type == RESTART_MONITOR:
                 stack = self.ml.removeStack(identifier)
                 setting = self.ml.removeSetting(identifier)
+                filename = self.ml.removeFile(identifier)
                 if stack != None:
                     stack.disconnect()
                     group.killone(stack.connect)
-                    self.spawnMonitor(identifier, setting)
+                    if msg_type == RESTART_MONITOR:
+                        self.spawnMonitor(identifier, setting, filename)
                 continue
 
             if msg_type == CONFIG_MONITOR:
-                self.spawnMonitor(identifier, data[2])
+                self.spawnMonitor(identifier, data[2], data[3])
 
-    def spawnMonitor(self, identifier, net_settings):    
-            print "MonitorSpawner: received config"
+    def spawnMonitor(self, identifier, net_settings, filename):    
             client = gevent_client.Client(net_settings["host"],
                                           net_settings["port"])
 
@@ -141,6 +153,7 @@ class MonitorSpawner(object):
             group.spawn(client.connect)
             self.ml.addStack(identifier, client)
             self.ml.addSetting(identifier, net_settings)
+            self.ml.addFile(identifier, filename)
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from gevent.monkey import patch_all
@@ -157,15 +170,23 @@ class ButtinskyXMLRPCServer(object):
         json_data = open('settings/' + filename)
         data = json.load(json_data)
         config = data["config"]
-        self.queue.put([CONFIG_MONITOR, identifier, config])
+        self.queue.put([CONFIG_MONITOR, identifier, config, filename])
         json_data.close()
-        return "Load command, recv id: " + identifier
+        return ""
 
     def create(self, filename, config):
         return "Create command, recvd file"
 
     def status(self):
-        return "Status command recvd"
+        status = self.ml.getFile()
+        root = "settings/"
+        status[""] = list()
+        for path, subdirs, files in os.walk(root):
+            for name in files:
+                filename = os.path.join(path, name).split(root)[1]
+                if filename not in status.values():
+                    status[""].append(filename)
+        return status
 
     def stop(self, identifier):
         self.queue.put([STOP_MONITOR, identifier, None])
@@ -175,9 +196,14 @@ class ButtinskyXMLRPCServer(object):
         self.queue.put([RESTART_MONITOR, identifier, None])
         return "Restart command, recvd id: " + identifier
 
-    def delete(self, identifier):
-        self.ml.removeSetting(identifier)
-        return "Delete command, recvd id: " + identifier
+    def list(self, filename):
+        f = open("settings/" + filename, "r")
+        content = f.read()
+        return content
+
+    def delete(self, filename):
+        os.remove("settings/" + filename)
+        return ""
 
     def echo(self, msg):
         return "Msg recvd: " + msg
