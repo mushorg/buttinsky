@@ -10,7 +10,7 @@ class IRCProtocol(LayerPlugin):
     def settings(self, net_settings):
         self.settings = {
                   "host": net_settings["host"],
-                  "port": net_settings.as_int("port"),
+                  "port": int(net_settings["port"]),
                   "channel": net_settings["channel"],
                   "nick": net_settings["nick"],
                   "hello": False,
@@ -65,3 +65,4 @@ class IRCProtocol(LayerPlugin):
             transmsg = transmsg + set_nick + set_user
             self.settings["hello"] = True
         return Message(transmsg, msg.left)
+

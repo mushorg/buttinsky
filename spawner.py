@@ -69,9 +69,27 @@ class MonitorSpawner(object):
     def listen(self):
         while True:
             data = self.messageQueue.get()
+            net_settings = data[1]
             print "MonitorSpawner: received config"
             self.ml.add(data[0], data[1])
-            #group.spawn()
+    
+            client = gevent_client.Client(net_settings["host"],
+                                          net_settings["port"])
+
+            # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
+            layer_network = Layer(gevent_client.Layer1(client))
+            layer_log = Layer(reporter_handler.ReporterHandler(), layer_network)
+            layer_protocol = Layer(irc.IRCProtocol(), layer_log)
+            layer_behavior = Layer(simple_response.SimpleResponse(), layer_protocol)
+
+            layer_protocol.settings(net_settings)
+
+            layer_log.setUpper(layer_protocol)
+            layer_network.setUpper(layer_log)
+            layer_protocol.setUpper(layer_behavior)
+
+            client.setLayer1(layer_network)
+            group.spawn(client.connect)
 
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
