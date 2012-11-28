@@ -104,21 +104,24 @@ class MonitorSpawner(object):
                 self.ml.removeSetting(identifier)
                 if stack != None:
                     stack.disconnect()
-                    group.killone(stack.connect, block=False)
+                    group.killone(stack.connect)
                 continue
 
             if msg_type == RESTART_MONITOR:
                 print "MonitorSpawner: received restart"
-                stack = self.ml.getStack(identifier)
+                stack = self.ml.removeStack(identifier)
+                setting = self.ml.removeSetting(identifier)
                 if stack != None:
                     stack.disconnect()
-                    group.killone(stack.connect, block=False)
-                    group.spawn(stack.connect)
+                    group.killone(stack.connect)
+                    self.spawnMonitor(identifier, setting)
                 continue
 
-            
+            if msg_type == CONFIG_MONITOR:
+                self.spawnMonitor(identifier, data[2])
+
+    def spawnMonitor(self, identifier, net_settings):    
             print "MonitorSpawner: received config"
-            net_settings = data[2]
             client = gevent_client.Client(net_settings["host"],
                                           net_settings["port"])
 

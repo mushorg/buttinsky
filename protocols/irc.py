@@ -14,7 +14,7 @@ class IRCProtocol(LayerPlugin):
                   "channel": net_settings["channel"],
                   "nick": net_settings["nick"],
                   "hello": False,
-                  }
+        }
 
     def receive(self, msg):
         left = ""
