@@ -190,11 +190,11 @@ class ButtinskyXMLRPCServer(object):
 
     def stop(self, identifier):
         self.queue.put([STOP_MONITOR, identifier, None])
-        return "Stop command, recvd id: " + identifier
+        return ""
 
     def restart(self, identifier):
         self.queue.put([RESTART_MONITOR, identifier, None])
-        return "Restart command, recvd id: " + identifier
+        return ""
 
     def list(self, filename):
         f = open("settings/" + filename, "r")

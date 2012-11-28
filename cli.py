@@ -31,7 +31,6 @@ class CLI(cmd.Cmd):
         \033[1;30msyntax: create <file> <conf> -- create new configuration from JSON encoded string, store it in file\033[0m
         """
         args = arg.split(' ')
-        print args[0]
         try:
             ret = self.conn.create(args[0], ''.join(args[1]))
             print ret
@@ -85,7 +84,6 @@ class CLI(cmd.Cmd):
         """
         try:
             ret = self.conn.stop(arg)
-            print ret
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
@@ -96,7 +94,6 @@ class CLI(cmd.Cmd):
         """
         try:
             ret = self.conn.restart(arg)
-            print ret
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
