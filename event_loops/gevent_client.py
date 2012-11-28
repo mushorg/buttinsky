@@ -18,6 +18,7 @@ class TCP(object):
         self.host = host
         self.port = int(port)
         self._socket = self._create_socket()
+        self.jobs = None
 
     def _create_socket(self):
         return socket.socket()
@@ -25,20 +26,22 @@ class TCP(object):
     def connect(self):
         self._socket.connect((self.host, self.port))
         try:
-            jobs = [gevent.spawn(self._recv_loop),
-                    gevent.spawn(self._send_loop)
-                    ]
-            gevent.joinall(jobs)
+            self.jobs = [gevent.spawn(self._recv_loop),
+                         gevent.spawn(self._send_loop)]
+            gevent.joinall(self.jobs)
         finally:
-            gevent.killall(jobs)
+            gevent.killall(self.jobs)
 
     def disconnect(self):
         self._socket.close()
 
     def _recv_loop(self):
         while True:
-            data = self._socket.recv(4096)
-            self.iqueue.put(data)
+            try:
+                data = self._socket.recv(4096)
+                self.iqueue.put(data)
+            except:
+                return
 
     def _send_loop(self):
         while True:

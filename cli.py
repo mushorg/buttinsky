@@ -28,10 +28,10 @@ class CLI(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        \033[1;30msyntax: create <id> <conf> -- create new configuration from JSON encoded string and identify it using id\033[0m
+        \033[1;30msyntax: create <file> <conf> -- create new configuration from JSON encoded string, store it in file\033[0m
         """
         args = arg.split(' ')
-        
+        print args[0]
         try:
             ret = self.conn.create(args[0], ''.join(args[1]))
             print ret
