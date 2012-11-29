@@ -8,6 +8,8 @@ import xmlrpclib
 import getopt
 import socket
 
+from configobj import ConfigObj
+
 
 class CLI(cmd.Cmd):
 
@@ -147,9 +149,9 @@ def usage():
 
 
 def main():
-    server = "localhost"
-    port = "8000"
-
+    buttinsky_config = ConfigObj("conf/buttinsky.cfg")
+    server = buttinsky_config["xmlrpc"]["server"]
+    port = buttinsky_config["xmlrpc"]["port"]
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hs:p:")
     except getopt.GetoptError:

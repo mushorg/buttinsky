@@ -3,6 +3,7 @@
 # See 'COPYING' for copying permission.
 
 import json
+import xmlrpclib
 
 import gevent
 
@@ -16,6 +17,8 @@ class HPFeedsSink(BaseSource):
 
     def __init__(self):
         self.buttinsky_config = ConfigObj("conf/buttinsky.cfg")
+        url = "http://" + self.buttinsky_config["xmlrpc"]["server"] + ":" + self.buttinsky_config["xmlrpc"]["port"]  + "/"
+        self.xmlrpc_conn = xmlrpclib.ServerProxy(url)
         self.options = {'enabled': 'False'}
         self.hpc = hpfeeds.new(self.buttinsky_config["hpfeeds"]["host"],
                                self.buttinsky_config["hpfeeds"]["port"],
@@ -26,6 +29,13 @@ class HPFeedsSink(BaseSource):
             try:
                 analysis_report = json.loads(str(payload))
                 self.received(analysis_report)
+                try:
+                    # TODO: Fix botnet id
+                    ret = self.xmlrpc_conn.create(1234, payload)
+                    print ret
+                except xmlrpclib.Fault as err:
+                    print "Command failed: ",
+                    print err
             except:
                 pass
 
