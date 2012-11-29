@@ -2,10 +2,6 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
-import signal
-
-import gevent
-
 from configobj import ConfigObj
 
 from event_loops import gevent_client
@@ -39,7 +35,7 @@ if __name__ == "__main__":
 
     # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
     layer_network = Layer(gevent_client.Layer1(client))
-    layer_log = Layer(reporter_handler.ReporterHander(), layer_network)
+    layer_log = Layer(reporter_handler.ReporterHandler(), layer_network)
     layer_protocol = Layer(irc.IRCProtocol(), layer_log)
     layer_behavior = Layer(simple_response.SimpleResponse(), layer_protocol)
 
