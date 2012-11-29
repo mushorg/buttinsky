@@ -228,8 +228,8 @@ if __name__ == '__main__':
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
     buttinsky_config = ConfigObj("conf/buttinsky.cfg")
-    hostname = buttinsky_config["xmlserver"]
-    port = int(buttinsky_config["xmlport"])
+    hostname = buttinsky_config["xmlrpc"]["server"]
+    port = int(buttinsky_config["xmlrpc"]["server"])
     server = SimpleXMLRPCServer((hostname, port))
     print "Listening on port 8000..."
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))
