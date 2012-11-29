@@ -167,6 +167,8 @@ class ButtinskyXMLRPCServer(object):
         self.queue = messageQueue
 
     def load(self, identifier, filename):
+        if self.ml.getStack(identifier):
+            raise Exception("Identifier " + identifier + " already exist")
         json_data = open('settings/' + filename)
         data = json.load(json_data)
         config = data["config"]
@@ -175,7 +177,13 @@ class ButtinskyXMLRPCServer(object):
         return ""
 
     def create(self, filename, config):
-        return "Create command, recvd file"
+        path = "settings/" + filename
+        if os.path.isfile(path):
+            raise Exception("File " + path + " already exist")
+        f = open(path, 'w')
+        f.write(json.dumps(json.loads(config)))
+        f.close()
+        return ""
 
     def status(self):
         status = self.ml.getFile()
@@ -189,10 +197,14 @@ class ButtinskyXMLRPCServer(object):
         return status
 
     def stop(self, identifier):
+        if not self.ml.getStack(identifier):
+            raise Exception("Identifier " + identifier + " does not exist")
         self.queue.put([STOP_MONITOR, identifier, None])
         return ""
 
     def restart(self, identifier):
+        if not self.ml.getStack(identifier):
+            raise Exception("Identifier " + identifier + " does not exist")
         self.queue.put([RESTART_MONITOR, identifier, None])
         return ""
 

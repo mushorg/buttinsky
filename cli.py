@@ -105,7 +105,7 @@ class CLI(cmd.Cmd):
         try:
             ret = self.conn.list(arg)
             print "\n\033[1;30mContents of " + arg + "\033[0m\n"
-            print ret
+            print ret + "\n"
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
