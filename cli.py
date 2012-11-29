@@ -4,7 +4,6 @@
 
 import cmd
 import sys
-import string
 import xmlrpclib
 import getopt
 import socket
@@ -40,15 +39,15 @@ class CLI(cmd.Cmd):
             print err
 
     def do_echo(self, arg):
-       """
-       \033[1;30msyntax: echo <message> -- send message to echo function to test non-blocking functionality\033[0m
-       """
-       try:
-           ret = self.conn.echo(arg)
-           print ret
-       except xmlrpclib.Fault as err:
+        """
+        \033[1;30msyntax: echo <message> -- send message to echo function to test non-blocking functionality\033[0m
+        """
+        try:
+            ret = self.conn.echo(arg)
+            print ret
+        except xmlrpclib.Fault as err:
             print "Command failed: ",
-            print err 
+            print err
 
     def do_load(self, arg):
         """
@@ -56,7 +55,7 @@ class CLI(cmd.Cmd):
         """
         args = arg.split(' ')
         try:
-            ret = self.conn.load(args[0], args[1]) 
+            ret = self.conn.load(args[0], args[1])
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
@@ -68,7 +67,7 @@ class CLI(cmd.Cmd):
         try:
             ret = self.conn.status()
             print "\n\033[1;30mFile\t\tMonitor ID\n====\t\t==========\n\033[0m"
-            for k,v in ret.iteritems():
+            for k, v in ret.iteritems():
                 if k == "":
                     for i in v:
                         print i + "\tNone"
@@ -146,23 +145,24 @@ def usage():
           "\t-s server\thostname of the server, default: localhost\n"\
           "\t-p port\t\tport number of the server, default: 8000\n"
 
+
 def main():
     server = "localhost"
     port = "8000"
 
-    try:                                
+    try:
         opts, args = getopt.getopt(sys.argv[1:], "hs:p:")
-    except getopt.GetoptError:          
-        usage()                         
-        sys.exit(2)   
-           
-    for opt, arg in opts:                
-        if opt in ("-h"):      
-            usage()                     
-            sys.exit()                  
-        elif opt in ("-s"):                
-            server = arg                  
-        elif opt in ("-p"): 
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt in ("-h"):
+            usage()
+            sys.exit()
+        elif opt in ("-s"):
+            server = arg
+        elif opt in ("-p"):
             port = arg
 
     url = "http://" + server + ":" + port + "/"
@@ -182,4 +182,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
