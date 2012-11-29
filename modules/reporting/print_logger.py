@@ -8,6 +8,7 @@ from base_logger import BaseLogger
 
 staticlogger = {}
 
+
 class PrintLogger(BaseLogger):
 
     def __init__(self, create_tables=True):
@@ -29,4 +30,3 @@ class PrintLogger(BaseLogger):
 
     def insert(self, msg):
         self.logger.info(msg)
-

@@ -65,4 +65,3 @@ class IRCProtocol(LayerPlugin):
             transmsg = transmsg + set_nick + set_user
             self.settings["hello"] = True
         return Message(transmsg, msg.left)
-
