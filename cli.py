@@ -7,6 +7,7 @@ import sys
 import string
 import xmlrpclib
 import getopt
+import socket
 
 
 class CLI(cmd.Cmd):
@@ -166,8 +167,12 @@ def main():
 
     url = "http://" + server + ":" + port + "/"
     conn = xmlrpclib.ServerProxy(url)
+
     try:
         ret = conn.echo("echo")
+    except socket.error:
+        print server + ":" + port + " seems to be down :(\n"
+        sys.exit(2)
     except xmlrpclib.Fault as err:
         print "Operation denied\n"
         print err

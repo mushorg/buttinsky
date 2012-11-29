@@ -125,7 +125,7 @@ class MonitorSpawner(object):
                 filename = self.ml.removeFile(identifier)
                 if stack != None:
                     stack.disconnect()
-                    group.killone(stack.connect)
+                    group.killone(stack.connect, block=True)
                     if msg_type == RESTART_MONITOR:
                         self.spawnMonitor(identifier, setting, filename)
                 continue
@@ -134,8 +134,7 @@ class MonitorSpawner(object):
                 self.spawnMonitor(identifier, data[2], data[3])
 
     def spawnMonitor(self, identifier, net_settings, filename):    
-            client = gevent_client.Client(net_settings["host"],
-                                          net_settings["port"])
+            client = gevent_client.Client(net_settings["host"], net_settings["port"])
 
             # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
             layer_network = Layer(gevent_client.Layer1(client))
@@ -154,6 +153,8 @@ class MonitorSpawner(object):
             self.ml.addStack(identifier, client)
             self.ml.addSetting(identifier, net_settings)
             self.ml.addFile(identifier, filename)
+
+
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from gevent.monkey import patch_all
