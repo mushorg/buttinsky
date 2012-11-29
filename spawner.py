@@ -2,11 +2,9 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
-import gevent
 import json
 import os
 
-from gevent.server import StreamServer
 from gevent import queue
 
 from event_loops import gevent_client
@@ -23,11 +21,13 @@ group = gevent.pool.Group()
 
 def singleton(cls):
     instances = {}
+
     def getinstance():
         if cls not in instances:
             instances[cls] = cls()
         return instances[cls]
     return getinstance
+
 
 @singleton
 class MonitorList(object):
@@ -95,10 +95,10 @@ class MonitorList(object):
         return filename
 
 
-
-CONFIG_MONITOR  = 0
-STOP_MONITOR    = 1
+CONFIG_MONITOR = 0
+STOP_MONITOR = 1
 RESTART_MONITOR = 2
+
 
 class MonitorSpawner(object):
 
@@ -133,14 +133,18 @@ class MonitorSpawner(object):
             if msg_type == CONFIG_MONITOR:
                 self.spawnMonitor(identifier, data[2], data[3])
 
-    def spawnMonitor(self, identifier, net_settings, filename):    
-            client = gevent_client.Client(net_settings["host"], net_settings["port"])
+    def spawnMonitor(self, identifier, net_settings, filename):
+            client = gevent_client.Client(net_settings["host"],
+                                          net_settings["port"])
 
             # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
             layer_network = Layer(gevent_client.Layer1(client))
-            layer_log = Layer(reporter_handler.ReporterHandler(), layer_network)
-            layer_protocol = Layer(irc.IRCProtocol(), layer_log)
-            layer_behavior = Layer(simple_response.SimpleResponse(), layer_protocol)
+            layer_log = Layer(reporter_handler.ReporterHandler(),
+                              layer_network)
+            layer_protocol = Layer(irc.IRCProtocol(),
+                                   layer_log)
+            layer_behavior = Layer(simple_response.SimpleResponse(),
+                                   layer_protocol)
 
             layer_protocol.settings(net_settings)
 
@@ -155,14 +159,13 @@ class MonitorSpawner(object):
             self.ml.addFile(identifier, filename)
 
 
-
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from gevent.monkey import patch_all
 patch_all()
 
 
 class ButtinskyXMLRPCServer(object):
-    
+
     def __init__(self, messageQueue):
         self.ml = MonitorList()
         self.queue = messageQueue
@@ -231,4 +234,3 @@ if __name__ == '__main__':
     print "Listening on port 8000..."
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))
     server.serve_forever()
-
