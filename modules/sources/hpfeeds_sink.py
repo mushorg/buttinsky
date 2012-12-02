@@ -31,7 +31,16 @@ class HPFeedsSink(BaseSource):
                 self.received(analysis_report)
                 try:
                     # TODO: Fix botnet id
-                    ret = self.xmlrpc_conn.create(1234, payload)
+                    config = {"config":
+                                    {
+                                    "nick": analysis_report["irc_nick"],
+                                    "host": analysis_report["irc_addr"].split(":", 1)[0],
+                                    "port": analysis_report["irc_addr"].split(":", 1)[1],
+                                    "server_pwd": analysis_report["irc_server_pwd"],
+                                    "channel": analysis_report["irc_channel"]
+                                    }
+                              }
+                    ret = self.xmlrpc_conn.create(1234, json.dumps(config))
                     print ret
                 except xmlrpclib.Fault as err:
                     print "Command failed: ",
