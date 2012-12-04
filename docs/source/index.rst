@@ -10,6 +10,7 @@ Contents:
    
    development/index
    installation/index
+   extending/index
 
 
 
