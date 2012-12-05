@@ -99,7 +99,6 @@ CONFIG_MONITOR = 0
 STOP_MONITOR = 1
 RESTART_MONITOR = 2
 
-
 class MonitorSpawner(object):
 
     def __init__(self, queue):
@@ -125,7 +124,7 @@ class MonitorSpawner(object):
                 filename = self.ml.removeFile(identifier)
                 if stack != None:
                     stack.disconnect()
-                    group.killone(stack.connect, block=True)
+                    group.killone(stack.connect)
                     if msg_type == RESTART_MONITOR:
                         self.spawnMonitor(identifier, setting, filename)
                 continue
@@ -136,22 +135,25 @@ class MonitorSpawner(object):
     def spawnMonitor(self, identifier, net_settings, filename):
             client = gevent_client.Client(net_settings["host"],
                                           net_settings["port"])
-
             # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
             layer_network = Layer(gevent_client.Layer1(client))
-            layer_log = Layer(reporter_handler.ReporterHandler(),
+
+            log_plugins = [p.strip() for p in net_settings["log_plugins"].split(",")]
+            layer_log = Layer(reporter_handler.ReporterHandler(log_plugins),
                               layer_network)
-            layer_protocol = Layer(irc.IRCProtocol(),
-                                   layer_log)
+
+            if net_settings["protocol_plugin"] == "irc":
+                proto = irc.IRCProtocol()
+            
+            layer_protocol = Layer(proto, layer_log)
             layer_behavior = Layer(simple_response.SimpleResponse(),
                                    layer_protocol)
-
             layer_protocol.settings(net_settings)
 
             layer_log.setUpper(layer_protocol)
             layer_network.setUpper(layer_log)
             layer_protocol.setUpper(layer_behavior)
-
+    
             client.setLayer1(layer_network)
             group.spawn(client.connect)
             self.ml.addStack(identifier, client)
@@ -185,7 +187,7 @@ class ButtinskyXMLRPCServer(object):
         if os.path.isfile(path):
             raise Exception("File " + path + " already exist")
         f = open(path, 'w')
-        f.write(json.dumps(json.loads(config)))
+        f.write(json.loads(config))
         f.close()
         return ""
 
@@ -229,7 +231,7 @@ if __name__ == '__main__':
     gevent.spawn(MonitorSpawner(messageQueue).work)
     buttinsky_config = ConfigObj("conf/buttinsky.cfg")
     hostname = buttinsky_config["xmlrpc"]["server"]
-    port = int(buttinsky_config["xmlrpc"]["server"])
+    port = int(buttinsky_config["xmlrpc"]["port"])
     server = SimpleXMLRPCServer((hostname, port))
     print "Listening on port 8000..."
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))

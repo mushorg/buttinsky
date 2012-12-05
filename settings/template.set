@@ -1,6 +1,8 @@
 {"config": {
+  "protocol_plugin": "irc",
+  "log_plugins": "",
   "nick": "NICCCKI",
   "host": "irc.freenode.net",
   "port": "6667",
-  "channel":"#testasdfff"
+  "channel":"#testasdfff, #testasdeee"
 }}

@@ -7,6 +7,7 @@ import sys
 import xmlrpclib
 import getopt
 import socket
+import json 
 
 from configobj import ConfigObj
 
@@ -34,7 +35,7 @@ class CLI(cmd.Cmd):
         """
         args = arg.split(' ')
         try:
-            ret = self.conn.create(args[0], ''.join(args[1]))
+            ret = self.conn.create(args[0], json.dumps(''.join(args[1])))
             print ret
         except xmlrpclib.Fault as err:
             print "Command failed: ",

@@ -6,13 +6,12 @@ import logging
 
 from base_logger import BaseLogger
 
-staticlogger = {}
 
+staticlogger = {}
 
 class PrintLogger(BaseLogger):
 
-    def __init__(self, create_tables=True):
-
+    def __init__(self, create_tables):
         global staticlogger
         if not "PrintLogger" in staticlogger:
             self.logger = logging.getLogger("PrintLogger")

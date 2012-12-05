@@ -11,6 +11,9 @@ from modules.reporting.base_logger import BaseLogger
 
 class ModuleImporter(object):
 
+    def __init__(self, plugins):
+        self.plugins = plugins
+
     def _get_logger_names(self, path='modules/reporting/'):
         names = os.listdir(path)
         for name in reversed(names):
@@ -24,8 +27,9 @@ class ModuleImporter(object):
         try:
             BaseLogger()
             for name in self._get_logger_names():
-                module_name = "modules.reporting." + name.split('.', 1)[0]
-                __import__(module_name, globals(), locals(), [], -1)
+                if name.split("_logger.py")[0] in self.plugins:
+                    module_name = "modules.reporting." + name.split('.', 1)[0]
+                    __import__(module_name, globals(), locals(), [], -1)
             logger_classes = BaseLogger.__subclasses__()
         except ImportError as e:
             print e
@@ -40,8 +44,8 @@ class ModuleImporter(object):
 
 class ReporterHandler(LayerPlugin):
 
-    def __init__(self):
-        self.reporting_handler = ModuleImporter()
+    def __init__(self, plugins):
+        self.reporting_handler = ModuleImporter(plugins)
         self.loggers = self.reporting_handler.get_loggers()
 
     def settings(self, setting):

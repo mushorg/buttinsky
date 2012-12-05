@@ -9,7 +9,9 @@ class HPFeedsLogger(BaseLogger):
 
     def __init__(self, create_tables):
         self.buttinsky_config = ConfigObj("conf/buttinsky.cfg")
-        self.options = {'enabled': 'False'}
+        if self.buttinsky_config["hpfeeds"]["enabled"] == "False":
+            self.options = {'enabled': 'False'}
+            return
 
         def on_error(payload):
             self.hpc.stop()
