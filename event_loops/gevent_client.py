@@ -5,7 +5,6 @@
 
 import gevent
 from gevent import socket, queue
-
 from stack import LayerPlugin, Message
 
 

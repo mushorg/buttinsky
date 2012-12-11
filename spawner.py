@@ -4,6 +4,7 @@
 
 import json
 import os
+from functools import partial
 
 from gevent import queue
 
@@ -133,32 +134,54 @@ class MonitorSpawner(object):
                 self.spawnMonitor(identifier, data[2], data[3])
 
     def spawnMonitor(self, identifier, net_settings, filename):
-            client = gevent_client.Client(net_settings["host"],
-                                          net_settings["port"])
-            # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
-            layer_network = Layer(gevent_client.Layer1(client))
+        client = gevent_client.Client(net_settings["host"],
+                                      net_settings["port"])
+        # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
+        layer_network = Layer(gevent_client.Layer1(client))
 
-            log_plugins = [p.strip() for p in net_settings["log_plugins"].split(",")]
-            layer_log = Layer(reporter_handler.ReporterHandler(log_plugins),
-                              layer_network)
+        log_plugins = [p.strip() for p in net_settings["log_plugins"].split(",")]
+        layer_log = Layer(reporter_handler.ReporterHandler(log_plugins),
+                          layer_network)
 
-            if net_settings["protocol_plugin"] == "irc":
-                proto = irc.IRCProtocol()
+        if net_settings["protocol_plugin"] == "irc":
+            proto = irc.IRCProtocol()
             
-            layer_protocol = Layer(proto, layer_log)
-            layer_behavior = Layer(simple_response.SimpleResponse(),
-                                   layer_protocol)
-            layer_protocol.settings(net_settings)
+        layer_protocol = Layer(proto, layer_log)
+        layer_behavior = Layer(simple_response.SimpleResponse(),
+                               layer_protocol)
+        layer_protocol.settings(net_settings)
 
-            layer_log.setUpper(layer_protocol)
-            layer_network.setUpper(layer_log)
-            layer_protocol.setUpper(layer_behavior)
+        layer_log.setUpper(layer_protocol)
+        layer_network.setUpper(layer_log)
+        layer_protocol.setUpper(layer_behavior)
     
-            client.setLayer1(layer_network)
-            group.spawn(client.connect)
-            self.ml.addStack(identifier, client)
-            self.ml.addSetting(identifier, net_settings)
-            self.ml.addFile(identifier, filename)
+        client.setLayer1(layer_network)
+        g = group.spawn(client.connect)
+        g.link(partial(self.onException, identifier))
+        self.ml.addStack(identifier, client)
+        self.ml.addSetting(identifier, net_settings)
+        self.ml.addFile(identifier, filename)
+
+    def onException(self, identifier, greenlet):
+        setting = self.ml.removeSetting(identifier)
+        reconnAttempts = 3
+        try:
+            reconnAttempts = int(setting["reconn_attempts"])
+        except KeyError:
+            pass
+
+        attempts = 0
+        try:
+            attempts = setting["attempts"]
+        except KeyError:
+           pass
+
+        if attempts < reconnAttempts:
+            setting["attempts"] = attempts+1
+            self.ml.addSetting(identifier, setting)
+            self.messageQueue.put([RESTART_MONITOR, identifier])
+        else:
+            self.messageQueue.put([STOP_MONITOR, identifier])
 
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
