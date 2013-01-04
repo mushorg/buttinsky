@@ -4,26 +4,62 @@
 # Example from here: https://gist.github.com/1506694
 
 import gevent
+from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 from gevent import socket, queue
 from stack import LayerPlugin, Message
 
 
-class TCP(object):
+class TCPSocket(object):
+    def __init__(self, host, port):
+        self._address = (host, int(port))
+        self._socket = socket.socket(AF_INET, SOCK_STREAM)
+
+    def connect(self):
+        self._socket.connect(self._address)
+
+    def disconnect(self):
+        self._socket.close()
+
+    def send(self, data):
+        return self._socket.send(data)
+
+    def recv(self, size):
+        return self._socket.recv(size)
+
+
+class UDPSocket(object):
+    def __init__(self, host, port):
+        self._address = (host, int(port))
+        self._socket = socket.socket(AF_INET, SOCK_DGRAM)
+
+    def connect(self):
+        pass
+
+    def disconnect(self):
+        self._socket.close()
+
+    def send(self, data):
+        return self._socket.sendto(data, self._address)
+
+    def recv(self, size):
+        data, addr = self._socket.recvfrom(size)
+        del addr
+        return data
+
+
+class Connection(object):
     def __init__(self, host, port):
         self._ibuffer = ''
         self._obuffer = ''
         self.iqueue = queue.Queue()
         self.oqueue = queue.Queue()
         self.host = host
-        self.port = int(port)
+        self.port = port
         self._socket = self._create_socket()
         self.jobs = None
 
-    def _create_socket(self):
-        return socket.socket()
-
     def connect(self):
-        self._socket.connect((self.host, self.port))
+        self._socket.connect()
         try:
             self.jobs = [gevent.spawn(self._recv_loop),
                          gevent.spawn(self._send_loop)]
@@ -32,7 +68,7 @@ class TCP(object):
             gevent.killall(self.jobs)
 
     def disconnect(self):
-        self._socket.close()
+        self._socket.disconnect()
 
     def _recv_loop(self):
         while True:
@@ -51,6 +87,16 @@ class TCP(object):
                 self._obuffer = self._obuffer[sent:]
 
 
+class TCPConnection(Connection):
+    def _create_socket(self):
+        return TCPSocket(self.host, self.port)
+
+
+class UDPConnection(Connection):
+    def _create_socket(self):
+        return UDPSocket(self.host, self.port)
+
+
 class Client(object):
     def __init__(self, host, port):
         self.lines = queue.Queue()
@@ -62,7 +108,7 @@ class Client(object):
         self.layer1 = layer1
 
     def _create_connection(self):
-        return TCP(self.host, self.port)
+        return TCPConnection(self.host, self.port)
 
     def connect(self):
         self.conn = self._create_connection()
@@ -86,7 +132,6 @@ class Client(object):
 
 
 class Layer1(LayerPlugin):
-
     def __init__(self, client):
         self.client = client
 
