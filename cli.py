@@ -125,7 +125,7 @@ class CLI(cmd.Cmd):
 
     def do_quit(self, arg):
         """
-        \033[1;30msyntax: quit -- exit the client gracefully, Shortcut: 'q'\033[0m
+        \033[1;30msyntax: quit -- exit the client gracefully, Shortcuts: 'q', 'CTRL-D'\033[0m
         """
         sys.exit(1)
 
@@ -140,6 +140,7 @@ class CLI(cmd.Cmd):
 
     # shortcuts
     do_q = do_quit
+    do_EOF = do_quit  # quit with CTRL-D
 
 
 def usage():

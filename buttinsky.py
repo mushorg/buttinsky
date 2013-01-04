@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     layer_protocol.settings(net_settings)
 
-    layer_log.setUpper(layer_protocol)
     layer_network.setUpper(layer_log)
+    layer_log.setUpper(layer_protocol)
     layer_protocol.setUpper(layer_behavior)
 
     client.setLayer1(layer_network)
