@@ -7,7 +7,7 @@ import sys
 import xmlrpclib
 import getopt
 import socket
-import json 
+import json
 
 from configobj import ConfigObj
 

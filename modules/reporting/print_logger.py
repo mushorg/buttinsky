@@ -9,8 +9,8 @@ from base_logger import BaseLogger
 
 staticlogger = {}
 
-class PrintLogger(BaseLogger):
 
+class PrintLogger(BaseLogger):
     def __init__(self, create_tables):
         global staticlogger
         if not "PrintLogger" in staticlogger:
@@ -18,8 +18,8 @@ class PrintLogger(BaseLogger):
             self.logger.setLevel(logging.DEBUG)
             ch = logging.StreamHandler()
             ch.setLevel(logging.DEBUG)
-            formatter = \
-            logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
             ch.setFormatter(formatter)
             self.logger.addHandler(ch)
             staticlogger["PrintLogger"] = self.logger
