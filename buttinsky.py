@@ -31,7 +31,8 @@ if __name__ == "__main__":
     net_settings["hello"] = set_nick + set_user
 
     client = gevent_client.Client(net_settings["host"],
-                                  net_settings["port"])
+                                  net_settings["port"],
+                                  net_settings["connection_protocol_type"])
 
     # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
     layer_network = Layer(gevent_client.Layer1(client))
