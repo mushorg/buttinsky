@@ -98,17 +98,21 @@ class UDPConnection(Connection):
 
 
 class Client(object):
-    def __init__(self, host, port):
+    def __init__(self, host, port, protocol="TCP"):
         self.lines = queue.Queue()
         self.host = host
         self.port = port
+        self.protocol = protocol
         self.layer1 = None
 
     def setLayer1(self, layer1):
         self.layer1 = layer1
 
     def _create_connection(self):
-        return TCPConnection(self.host, self.port)
+        if self.protocol == "UDP":
+            return UDPConnection(self.host, self.port)
+        else:  # default TCP
+            return TCPConnection(self.host, self.port)
 
     def connect(self):
         self.conn = self._create_connection()

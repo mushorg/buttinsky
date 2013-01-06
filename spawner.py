@@ -100,6 +100,7 @@ CONFIG_MONITOR = 0
 STOP_MONITOR = 1
 RESTART_MONITOR = 2
 
+
 class MonitorSpawner(object):
 
     def __init__(self, queue):
@@ -135,17 +136,19 @@ class MonitorSpawner(object):
 
     def spawnMonitor(self, identifier, net_settings, filename):
         client = gevent_client.Client(net_settings["host"],
-                                      net_settings["port"])
+                                      net_settings["port"],
+                                      net_settings["connection_protocol_type"])
         # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
         layer_network = Layer(gevent_client.Layer1(client))
 
-        log_plugins = [p.strip() for p in net_settings["log_plugins"].split(",")]
+        log_plugins = [
+            p.strip() for p in net_settings["log_plugins"].split(",")]
         layer_log = Layer(reporter_handler.ReporterHandler(log_plugins),
                           layer_network)
 
         if net_settings["protocol_plugin"] == "irc":
             proto = irc.IRCProtocol()
-            
+
         layer_protocol = Layer(proto, layer_log)
         layer_behavior = Layer(simple_response.SimpleResponse(),
                                layer_protocol)
@@ -154,7 +157,7 @@ class MonitorSpawner(object):
         layer_log.setUpper(layer_protocol)
         layer_network.setUpper(layer_log)
         layer_protocol.setUpper(layer_behavior)
-    
+
         client.setLayer1(layer_network)
         g = group.spawn(client.connect)
         g.link(partial(self.onException, identifier))
@@ -174,10 +177,10 @@ class MonitorSpawner(object):
         try:
             attempts = setting["attempts"]
         except KeyError:
-           pass
+            pass
 
         if attempts < reconnAttempts:
-            setting["attempts"] = attempts+1
+            setting["attempts"] = attempts + 1
             self.ml.addSetting(identifier, setting)
             self.messageQueue.put([RESTART_MONITOR, identifier])
         else:
@@ -218,7 +221,7 @@ class ButtinskyXMLRPCServer(object):
         status = self.ml.getFile()
         root = "settings/"
         status[""] = list()
-        for path, subdirs, files in os.walk(root):
+        for path, _subdirs, files in os.walk(root):
             for name in files:
                 filename = os.path.join(path, name).split(root)[1]
                 if filename not in status.values():

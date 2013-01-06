@@ -1,5 +1,6 @@
 {"config": {
   "protocol_plugin": "irc",
+  "connection_protocol_type": "TCP",
   "log_plugins": "print",
   "nick": "NICCCKI",
   "host": "irc.freenode.net",
