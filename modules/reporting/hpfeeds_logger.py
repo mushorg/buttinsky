@@ -7,7 +7,7 @@ from base_logger import BaseLogger
 
 class HPFeedsLogger(BaseLogger):
 
-    def __init__(self, create_tables):
+    def __init__(self):
         self.buttinsky_config = ConfigObj("conf/buttinsky.cfg")
         if self.buttinsky_config["hpfeeds"]["enabled"] == "False":
             self.options = {'enabled': 'False'}
@@ -20,7 +20,7 @@ class HPFeedsLogger(BaseLogger):
             print content
         try:
             self.hpc = hpfeeds.new(self.buttinsky_config["hpfeeds"]["host"],
-                                   self.buttinsky_config["hpfeeds"]["port"],
+                                   int(self.buttinsky_config["hpfeeds"]["port"]),
                                    self.buttinsky_config["hpfeeds"]["ident"],
                                    self.buttinsky_config["hpfeeds"]["secret"])
             self.hpc.connect()
@@ -28,5 +28,5 @@ class HPFeedsLogger(BaseLogger):
             pass
 
     def insert(self, data):
-        for chaninfo in self.buttinsky_config["hpfeeds"]["channels"]:
+        for chaninfo in self.buttinsky_config["hpfeeds"]["publish_channels"]:
             self.hpc.publish(chaninfo, data)

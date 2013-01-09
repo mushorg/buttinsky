@@ -18,7 +18,8 @@ from stack import Layer
 
 import gevent.pool
 group = gevent.pool.Group()
-
+#TODO : hpfeeds import to be removed when report_handler is ready
+import modules.reporting.hpfeeds_logger as hpfeeds
 
 def singleton(cls):
     instances = {}
@@ -253,6 +254,8 @@ class ButtinskyXMLRPCServer(object):
         return "Msg recvd: " + msg
 
 if __name__ == '__main__':
+    hpfeeds_logger = hpfeeds.HPFeedsLogger()
+    hpfeeds_logger.insert("Successfully loaded and connected to HPFeedsLogger")
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
     buttinsky_config = ConfigObj("conf/buttinsky.cfg")
