@@ -255,7 +255,6 @@ class ButtinskyXMLRPCServer(object):
 
 if __name__ == '__main__':
     hpfeeds_logger = hpfeeds.HPFeedsLogger()
-    hpfeeds_logger.insert("Successfully loaded and connected to HPFeedsLogger")
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
     buttinsky_config = ConfigObj("conf/buttinsky.cfg")
