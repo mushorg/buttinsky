@@ -11,7 +11,7 @@ staticlogger = {}
 
 
 class PrintLogger(BaseLogger):
-    def __init__(self, create_tables):
+    def __init__(self):
         global staticlogger
         if not "PrintLogger" in staticlogger:
             self.logger = logging.getLogger("PrintLogger")
