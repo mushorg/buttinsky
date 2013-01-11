@@ -22,7 +22,7 @@ class ModuleImporter(object):
                 names.remove(name)
         return names
 
-    def get_loggers(self, create_tables=True):
+    def get_loggers(self):
         loggers = []
         try:
             BaseLogger()
