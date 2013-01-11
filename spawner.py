@@ -21,6 +21,7 @@ group = gevent.pool.Group()
 #TODO : hpfeeds import to be removed when report_handler is ready
 import modules.reporting.hpfeeds_logger as hpfeeds
 
+
 def singleton(cls):
     instances = {}
 
