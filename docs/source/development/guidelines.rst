@@ -7,7 +7,7 @@ Developers Guide
 
 Indentation
 ------------
-* We are using 4 tab-spaces
+* We are using 4 spaces-tab
 * No one line conditionals
 
 Style
