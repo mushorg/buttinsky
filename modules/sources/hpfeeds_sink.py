@@ -21,14 +21,13 @@ class HPFeedsSink(BaseSource):
         self.xmlrpc_conn = xmlrpclib.ServerProxy(url)
         self.options = {'enabled': 'False'}
         self.hpc = hpfeeds.new(self.buttinsky_config["hpfeeds"]["host"],
-                               self.buttinsky_config["hpfeeds"]["port"],
+                               int(self.buttinsky_config["hpfeeds"]["port"]),
                                self.buttinsky_config["hpfeeds"]["ident"],
                                self.buttinsky_config["hpfeeds"]["secret"])
 
         def on_message(identifier, channel, payload):
             try:
                 analysis_report = json.loads(str(payload))
-                self.received(analysis_report)
                 try:
                     # TODO: Fix botnet id
                     config = {"config":
@@ -40,13 +39,12 @@ class HPFeedsSink(BaseSource):
                                     "channel": analysis_report["irc_channel"]
                                     }
                               }
-                    ret = self.xmlrpc_conn.create(1234, json.dumps(config))
+                    ret = self.xmlrpc_conn.create("12341231", json.dumps(config))
                     print ret
-                except xmlrpclib.Fault as err:
-                    print "Command failed: ",
-                    print err
+                except:
+                    raise
             except:
-                pass
+                raise
 
         def on_error(payload):
             self.hpc.stop()
@@ -55,9 +53,6 @@ class HPFeedsSink(BaseSource):
         gevent.spawn(self.hpc.run(on_message, on_error))
         self.hpc.close()
         return 0
-
-    def received(self, payload):
-        print payload
 
 
 if __name__ == "__main__":
