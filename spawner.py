@@ -214,8 +214,8 @@ class ButtinskyXMLRPCServer(object):
         path = "settings/" + filename
         if os.path.isfile(path):
             raise Exception("File " + path + " already exist")
-        f = open(path, 'w')
-        f.write(json.loads(config))
+        f = open(path, 'wb')
+        f.write(config)
         f.close()
         return ""
 
