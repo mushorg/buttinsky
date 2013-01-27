@@ -8,6 +8,7 @@ import xmlrpclib
 import getopt
 import socket
 import json
+import os
 
 from configobj import ConfigObj
 
@@ -151,6 +152,8 @@ def usage():
 
 
 def main():
+    if not os.path.isfile("conf/buttinsky.cfg"):
+        sys.exit("Startup Error: Could not find configuration file: conf/buttinsky.cfg.")
     buttinsky_config = ConfigObj("conf/buttinsky.cfg")
     server = buttinsky_config["xmlrpc"]["server"]
     port = buttinsky_config["xmlrpc"]["port"]
