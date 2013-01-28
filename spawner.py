@@ -20,6 +20,7 @@ import gevent.pool
 group = gevent.pool.Group()
 #TODO : hpfeeds import to be removed when report_handler is ready
 import modules.reporting.hpfeeds_logger as hpfeeds
+import modules.sources.hpfeeds_sink as hpfeeds_sink
 
 def singleton(cls):
     instances = {}
@@ -199,6 +200,9 @@ class ButtinskyXMLRPCServer(object):
         self.ml = MonitorList()
         self.queue = messageQueue
 
+    def load_sink(self):
+        hpfeed_sink = hpfeeds_sink.HPFeedsSink()
+
     def load(self, identifier, filename):
         if self.ml.getStack(identifier):
             raise Exception("Identifier " + identifier + " already exist")
@@ -213,8 +217,8 @@ class ButtinskyXMLRPCServer(object):
         path = "settings/" + filename
         if os.path.isfile(path):
             raise Exception("File " + path + " already exist")
-        f = open(path, 'w')
-        f.write(json.loads(config))
+        f = open(path, 'wb')
+        f.write(config)
         f.close()
         return ""
 
@@ -263,4 +267,5 @@ if __name__ == '__main__':
     server = SimpleXMLRPCServer((hostname, port))
     print "Listening on port 8000..."
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))
+    gevent.spawn(ButtinskyXMLRPCServer(messageQueue).load_sink)
     server.serve_forever()
