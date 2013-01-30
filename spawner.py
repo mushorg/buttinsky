@@ -261,7 +261,7 @@ class ButtinskyXMLRPCServer(object):
 
 if __name__ == '__main__':
     if not os.path.isfile("conf/buttinsky.cfg"):
-        sys.exit("Startup Error: Could not find configuration file: conf/buttinsky.cfg.")
+        sys.exit("Modify and rename conf/buttinsky.cfg.dist to conf/buttinsky.cfg.")
     hpfeeds_logger = hpfeeds.HPFeedsLogger()
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
