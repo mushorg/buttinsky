@@ -24,6 +24,7 @@ class HPFeedsLogger(BaseLogger):
                                    self.buttinsky_config["hpfeeds"]["ident"],
                                    self.buttinsky_config["hpfeeds"]["secret"])
             self.hpc.connect()
+            self.options = {'enabled': 'True'}
         except KeyError:
             pass
 
