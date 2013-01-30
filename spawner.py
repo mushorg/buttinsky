@@ -4,6 +4,7 @@
 
 import json
 import os
+import sys
 from functools import partial
 
 from gevent import queue
@@ -21,6 +22,7 @@ group = gevent.pool.Group()
 #TODO : hpfeeds import to be removed when report_handler is ready
 import modules.reporting.hpfeeds_logger as hpfeeds
 import modules.sources.hpfeeds_sink as hpfeeds_sink
+
 
 def singleton(cls):
     instances = {}
@@ -258,6 +260,8 @@ class ButtinskyXMLRPCServer(object):
         return "Msg recvd: " + msg
 
 if __name__ == '__main__':
+    if not os.path.isfile("conf/buttinsky.cfg"):
+        sys.exit("Startup Error: Could not find configuration file: conf/buttinsky.cfg.")
     hpfeeds_logger = hpfeeds.HPFeedsLogger()
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
