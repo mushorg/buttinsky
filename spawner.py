@@ -4,6 +4,7 @@
 
 import json
 import os
+import sys
 from functools import partial
 
 from gevent import queue
@@ -259,6 +260,8 @@ class ButtinskyXMLRPCServer(object):
         return "Msg recvd: " + msg
 
 if __name__ == '__main__':
+    if not os.path.isfile("conf/buttinsky.cfg"):
+        sys.exit("Modify and rename conf/buttinsky.cfg.dist to conf/buttinsky.cfg.")
     hpfeeds_logger = hpfeeds.HPFeedsLogger()
     messageQueue = queue.Queue()
     gevent.spawn(MonitorSpawner(messageQueue).work)
