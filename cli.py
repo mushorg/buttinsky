@@ -11,7 +11,7 @@ import json
 import os
 
 from configobj import ConfigObj
-
+import modules.sources.validate as validate
 
 class CLI(cmd.Cmd):
 
@@ -59,6 +59,7 @@ class CLI(cmd.Cmd):
         """
         args = arg.split(' ')
         try:
+            validate.irc_validate(args[1])
             ret = self.conn.load(args[0], args[1])
         except xmlrpclib.Fault as err:
             print "Command failed: ",
