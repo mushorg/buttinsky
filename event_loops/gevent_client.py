@@ -42,8 +42,7 @@ class UDPSocket(object):
         return self._socket.sendto(data, self._address)
 
     def recv(self, size):
-        data, addr = self._socket.recvfrom(size)
-        del addr
+        data, _addr = self._socket.recvfrom(size)
         return data
 
 
