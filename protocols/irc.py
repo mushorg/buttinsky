@@ -7,12 +7,14 @@ from stack import LayerPlugin, Message
 
 class IRCProtocol(LayerPlugin):
 
-    def settings(self, net_settings):
+    def settings(self, settings):
+        net_settings = settings["network"]
+        pr_settings = settings["protocol"]
         self.settings = {
                   "host": net_settings["host"],
                   "port": int(net_settings["port"]),
-                  "channel": net_settings["channel"],
-                  "nick": net_settings["nick"],
+                  "channel": pr_settings["channel"],
+                  "nick": pr_settings["nick"],
                   "hello": False,
         }
 

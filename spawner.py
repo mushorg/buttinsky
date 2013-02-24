@@ -12,7 +12,7 @@ from gevent import queue
 from event_loops import gevent_client
 from configobj import ConfigObj
 
-from protocols import irc
+from protocols import irc, http
 from behaviors import simple_response
 from modules import reporter_handler
 from stack import Layer
@@ -138,25 +138,30 @@ class MonitorSpawner(object):
             if msg_type == CONFIG_MONITOR:
                 self.spawnMonitor(identifier, data[2], data[3])
 
-    def spawnMonitor(self, identifier, net_settings, filename):
+    def spawnMonitor(self, identifier, config, filename):
+        net_settings = config["network"]
         client = gevent_client.Client(net_settings["host"],
                                       net_settings["port"],
-                                      net_settings["connection_protocol_type"])
+                                      net_settings["protocol_type"])
         # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
         layer_network = Layer(gevent_client.Layer1(client))
 
         log_plugins = [
-            p.strip() for p in net_settings["log_plugins"].split(",")]
+            p.strip() for p in config["log"]["plugins"].split(",")]
         layer_log = Layer(reporter_handler.ReporterHandler(log_plugins),
                           layer_network)
 
-        if net_settings["protocol_plugin"] == "irc":
-            proto = irc.IRCProtocol()
+        if config["protocol"]["plugin"] == "IRC":
+            protocol = irc.IRCProtocol()
+        elif config["protocol"]["plugin"] == "HTTP":
+            protocol = http.HTTPProtocol()
 
-        layer_protocol = Layer(proto, layer_log)
-        layer_behavior = Layer(simple_response.SimpleResponse(),
-                               layer_protocol)
-        layer_protocol.settings(net_settings)
+        if config["behavior"]["plugin"] == "simple_response":
+            behavior = simple_response.SimpleResponse()
+
+        layer_protocol = Layer(protocol, layer_log)
+        layer_behavior = Layer(behavior, layer_protocol)
+        layer_protocol.settings(config)
 
         layer_log.setUpper(layer_protocol)
         layer_network.setUpper(layer_log)
@@ -166,14 +171,14 @@ class MonitorSpawner(object):
         g = group.spawn(client.connect)
         g.link(partial(self.onException, identifier))
         self.ml.addStack(identifier, client)
-        self.ml.addSetting(identifier, net_settings)
+        self.ml.addSetting(identifier, config)
         self.ml.addFile(identifier, filename)
 
     def onException(self, identifier, greenlet):
         setting = self.ml.removeSetting(identifier)
         reconnAttempts = 3
         try:
-            reconnAttempts = int(setting["reconn_attempts"])
+            reconnAttempts = int(setting["network"]["reconn_attempts"])
         except KeyError:
             pass
 

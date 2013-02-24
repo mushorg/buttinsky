@@ -1,0 +1,21 @@
+{
+    "config": {
+        "network": {
+            "host": "irc.freenode.net",
+            "port": "6667",
+            "protocol_type": "TCP",
+            "reconn_attempts": "2"
+        },
+        "log": {
+            "plugins": "print"
+        },
+        "protocol": {
+            "plugin": "IRC",
+            "nick": "NICCCKI",
+            "channel": "#testasdfff, #testasdeee"
+        },
+        "behavior": {
+            "plugin": "simple_response"
+        }
+    }
+}
