@@ -141,7 +141,10 @@ class MonitorSpawner(object):
     def spawnMonitor(self, identifier, net_settings, filename):
         client = gevent_client.Client(net_settings["host"],
                                       net_settings["port"],
-                                      net_settings["connection_protocol_type"])
+                                      net_settings["connection_protocol_type"],
+                                      net_settings["proxy_type"],
+                                      net_settings["proxy_host"],
+                                      net_settings["proxy_port"])
         # layer_network <-> layer_log <-> layer_protocol <-> layer_behavior
         layer_network = Layer(gevent_client.Layer1(client))
 
