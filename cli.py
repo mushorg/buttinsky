@@ -13,6 +13,7 @@ import os
 from configobj import ConfigObj
 import modules.util.validate as validate
 
+
 class CLI(cmd.Cmd):
 
     def __init__(self, connection):

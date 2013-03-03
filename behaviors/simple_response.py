@@ -16,9 +16,7 @@ class SimpleResponse(LayerPlugin):
             if "command" in m:
                 if m["command"] == "PRIVMSG":
                     if m["args"][1] == "hello":
-                        reply = {"command": "",
-                                 "args": [],
-                                 }
+                        reply = dict()
                         reply["command"] = "PRIVMSG"
                         reply["args"] = m["prefix"].split('!~')[0] + " hey!"
                         messages.append(reply)

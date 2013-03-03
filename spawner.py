@@ -52,7 +52,7 @@ class MonitorList(object):
         self.__fileList[identifier] = filename
 
     def getStack(self, identifier=None):
-        if identifier == None:
+        if not identifier:
             return self.__stackList
         stack = None
         try:
@@ -62,7 +62,7 @@ class MonitorList(object):
         return stack
 
     def getSetting(self, identifier=None):
-        if identifier == None:
+        if not identifier:
             return self.__settingList
         setting = None
         try:
@@ -72,7 +72,7 @@ class MonitorList(object):
         return setting
 
     def getFile(self, identifier=None):
-        if identifier == None:
+        if not identifier:
             return self.__fileList
         filename = None
         try:
@@ -83,19 +83,19 @@ class MonitorList(object):
 
     def removeStack(self, identifier):
         stack = self.getStack(identifier)
-        if stack != None:
+        if stack:
             del self.__stackList[identifier]
         return stack
 
     def removeSetting(self, identifier):
         setting = self.getSetting(identifier)
-        if setting != None:
+        if setting:
             del self.__settingList[identifier]
         return setting
 
     def removeFile(self, identifier):
         filename = self.getFile(identifier)
-        if filename != None:
+        if filename:
             del self.__fileList[identifier]
         return filename
 
@@ -128,7 +128,7 @@ class MonitorSpawner(object):
                 stack = self.ml.removeStack(identifier)
                 setting = self.ml.removeSetting(identifier)
                 filename = self.ml.removeFile(identifier)
-                if stack != None:
+                if stack:
                     stack.disconnect()
                     group.killone(stack.connect)
                     if msg_type == RESTART_MONITOR:
