@@ -36,7 +36,7 @@ class ModuleImporter(object):
             return None
         else:
             for logger_class in logger_classes:
-                logger = logger_class(create_tables=create_tables)
+                logger = logger_class()
                 if logger.options['enabled'] == 'True':
                     loggers.append(logger)
             return loggers
