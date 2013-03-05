@@ -1,0 +1,24 @@
+{
+    "config": {
+        "network": {
+            "host": "www.google.com",
+            "port": "80",
+            "protocol_type": "TCP",
+            "reconn_attempts": "2"
+        },
+        "log": {
+            "plugins": "print"
+        },
+        "protocol": {
+            "default_method": "GET",
+            "default_URI": "/robots.txt",
+            "default_version": "HTTP/1.1",
+            "default_headers": {
+                "User-Agent": "Mozilla/5.0"
+            }
+        },
+        "behavior": {
+            "plugin": "get_robots_txt"
+        }
+    }
+}
