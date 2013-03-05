@@ -13,7 +13,7 @@ from event_loops import gevent_client
 from configobj import ConfigObj
 
 from protocols import irc, http
-from behaviors import simple_response
+from behaviors import simple_response, get_robots_txt
 from modules import reporter_handler
 from stack import Layer
 
@@ -158,6 +158,8 @@ class MonitorSpawner(object):
 
         if config["behavior"]["plugin"] == "simple_response":
             behavior = simple_response.SimpleResponse()
+        elif config["behavior"]["plugin"] == "get_robots_txt":
+            behavior = get_robots_txt.GetRobotsTxt()
 
         layer_protocol = Layer(protocol, layer_log)
         layer_behavior = Layer(behavior, layer_protocol)
