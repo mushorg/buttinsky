@@ -51,11 +51,11 @@ class IRCProtocol(LayerPlugin):
                 if m["command"] == "001":
                     chanlist = self.settings["channel"].split(",")
                     for chan in chanlist:
-                        transmsg = transmsg + "JOIN %s\r\n" % chan.strip()
+                        transmsg += "JOIN %s\r\n" % chan.strip()
                 if m["command"] == "PING":
-                    transmsg = transmsg + "PONG %s\r\n" % m["args"][0]
+                    transmsg += "PONG %s\r\n" % m["args"][0]
                 if m["command"] == "PRIVMSG":
-                    transmsg = transmsg + "PRIVMSG %s\r\n" % m["args"]
+                    transmsg += "PRIVMSG %s\r\n" % m["args"]
         if not self.settings["hello"]:
             set_nick = "NICK %s\r\n" % self.settings["nick"]
             set_user = "USER %s %s bla :%s\r\n" % (self.settings["nick"],

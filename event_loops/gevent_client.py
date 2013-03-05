@@ -7,12 +7,13 @@ import gevent
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 from gevent import socket, queue
 from stack import LayerPlugin, Message
+from socks import socksocket, PROXY_TYPE_SOCKS4, PROXY_TYPE_SOCKS5
 
 
 class TCPSocket(object):
     def __init__(self, host, port):
         self._address = (host, int(port))
-        self._socket = socket.socket(AF_INET, SOCK_STREAM)
+        self._socket = socksocket(AF_INET, SOCK_STREAM)
 
     def connect(self):
         self._socket.connect(self._address)
@@ -25,6 +26,18 @@ class TCPSocket(object):
 
     def recv(self, size):
         return self._socket.recv(size)
+
+
+class TCPSocks4Socket(TCPSocket):
+    def __init__(self, host, port, socks_host, socks_port):
+        super(TCPSocks4Socket, self).__init__(host, port)
+        self._socket.setproxy(PROXY_TYPE_SOCKS4, socks_host, socks_port)
+
+
+class TCPSocks5Socket(TCPSocket):
+    def __init__(self, host, port, socks_host, socks_port):
+        super(TCPSocks5Socket, self).__init__(host, port)
+        self._socket.setproxy(PROXY_TYPE_SOCKS5, socks_host, socks_port)
 
 
 class UDPSocket(object):
@@ -56,6 +69,9 @@ class Connection(object):
         self.port = port
         self._socket = self._create_socket()
         self.jobs = None
+
+    def _create_socket(self):
+        raise NotImplementedError
 
     def connect(self):
         self._socket.connect()
@@ -96,12 +112,37 @@ class UDPConnection(Connection):
         return UDPSocket(self.host, self.port)
 
 
+class ProxyConnection(Connection):
+    def __init__(self, host, port, proxy_host, proxy_port):
+        self.proxy_host = proxy_host
+        self.proxy_port = proxy_port
+        super(Connection, self).__init__(host, port)
+
+
+class TCPSocks4ProxyConnection(ProxyConnection):
+    def _create_socket(self):
+        return TCPSocks4Socket(
+            self.host, self.port,
+            self.proxy_host, self.proxy_port)
+
+
+class TCPSocks5ProxyConnection(ProxyConnection):
+    def _create_socket(self):
+        return TCPSocks5Socket(
+            self.host, self.port,
+            self.proxy_host, self.proxy_port)
+
+
 class Client(object):
-    def __init__(self, host, port, protocol="TCP"):
+    def __init__(self, host, port, protocol="TCP",
+                 proxy_type="", proxy_host=None, proxy_port=None):
         self.lines = queue.Queue()
         self.host = host
         self.port = port
         self.protocol = protocol
+        self.proxy_type = proxy_type
+        self.proxy_host = proxy_host
+        self.proxy_port = proxy_port
         self.layer1 = None
 
     def setLayer1(self, layer1):
@@ -110,8 +151,17 @@ class Client(object):
     def _create_connection(self):
         if self.protocol == "UDP":
             return UDPConnection(self.host, self.port)
-        else:  # default TCP
-            return TCPConnection(self.host, self.port)
+        else:  # defaults to TCP
+            if self.proxy_type == "socks4":
+                return TCPSocks4ProxyConnection(
+                    self.host, self.port,
+                    self.proxy_host, self.proxy_port)
+            elif self.proxy_type == "socks5":
+                return TCPSocks5ProxyConnection(
+                    self.host, self.port,
+                    self.proxy_host, self.proxy_port)
+            else:  # TCP without proxy
+                return TCPConnection(self.host, self.port)
 
     def connect(self):
         self.conn = self._create_connection()
