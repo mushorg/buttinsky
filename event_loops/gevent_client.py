@@ -13,7 +13,7 @@ from socks import socksocket, PROXY_TYPE_SOCKS4, PROXY_TYPE_SOCKS5
 class TCPSocket(object):
     def __init__(self, host, port):
         self._address = (host, int(port))
-        self._socket = socksocket(AF_INET, SOCK_STREAM)
+        self._socket = socket.socket(AF_INET, SOCK_STREAM)
 
     def connect(self):
         self._socket.connect(self._address)
@@ -30,13 +30,15 @@ class TCPSocket(object):
 
 class TCPSocks4Socket(TCPSocket):
     def __init__(self, host, port, socks_host, socks_port):
-        super(TCPSocks4Socket, self).__init__(host, port)
+        self._address = (host, int(port))
+        self._socket = socksocket(AF_INET, SOCK_STREAM)
         self._socket.setproxy(PROXY_TYPE_SOCKS4, socks_host, socks_port)
 
 
 class TCPSocks5Socket(TCPSocket):
     def __init__(self, host, port, socks_host, socks_port):
-        super(TCPSocks5Socket, self).__init__(host, port)
+        self._address = (host, int(port))
+        self._socket = socksocket(AF_INET, SOCK_STREAM)
         self._socket.setproxy(PROXY_TYPE_SOCKS5, socks_host, socks_port)
 
 
