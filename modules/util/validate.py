@@ -21,11 +21,11 @@ irc_schema = {
                 },
                 "proxy_host": {
                     "type": "string",
-                    "required": False
+                    "blank": True
                 },
                 "proxy_port": {
                     "type": "string",
-                    "required": False
+                    "blank": True
                 },
                 "log_plugins": {
                     "type": "string",
