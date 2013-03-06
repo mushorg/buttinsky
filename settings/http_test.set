@@ -1,7 +1,7 @@
 {
     "config": {
         "network": {
-            "host": "www.google.com",
+            "host": "whatismyipaddress.com",
             "port": "80",
             "protocol_type": "TCP",
             "reconn_attempts": "2"
@@ -11,14 +11,15 @@
         },
         "protocol": {
             "default_method": "GET",
-            "default_URI": "/robots.txt",
+            "default_URI": "/",
             "default_version": "HTTP/1.1",
             "default_headers": {
-                "User-Agent": "Mozilla/5.0"
+                "User-Agent": "Mozilla/5.0",
+                "Host": "whatismyipaddress.com"
             }
         },
         "behavior": {
-            "plugin": "get_robots_txt"
+            "plugin": "address_check"
         }
     }
 }

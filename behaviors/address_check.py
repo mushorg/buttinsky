@@ -5,13 +5,14 @@
 from stack import LayerPlugin, Message
 
 
-class GetRobotsTxt(LayerPlugin):
+class AddressCheck(LayerPlugin):
 
     def settings(self, setting):
         pass
 
     def receive(self, msgs):
+        # TODO parse webpage content
         pass
 
     def transmit(self, msg):
-        pass
+        return msg
