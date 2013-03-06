@@ -12,7 +12,7 @@ from socks import socksocket, PROXY_TYPE_SOCKS4, PROXY_TYPE_SOCKS5
 
 class TCPSocket(object):
     def __init__(self, host, port):
-        self._address = (host, int(port))
+        self._address = (str(host), int(port))
         self._socket = socket.socket(AF_INET, SOCK_STREAM)
 
     def connect(self):
@@ -30,21 +30,23 @@ class TCPSocket(object):
 
 class TCPSocks4Socket(TCPSocket):
     def __init__(self, host, port, socks_host, socks_port):
-        self._address = (host, int(port))
+        self._address = (str(host), int(port))
         self._socket = socksocket(AF_INET, SOCK_STREAM)
-        self._socket.setproxy(PROXY_TYPE_SOCKS4, socks_host, socks_port)
+        self._socket.setproxy(PROXY_TYPE_SOCKS4,
+                              str(socks_host), int(socks_port))
 
 
 class TCPSocks5Socket(TCPSocket):
     def __init__(self, host, port, socks_host, socks_port):
-        self._address = (host, int(port))
+        self._address = (str(host), int(port))
         self._socket = socksocket(AF_INET, SOCK_STREAM)
-        self._socket.setproxy(PROXY_TYPE_SOCKS5, socks_host, socks_port)
+        self._socket.setproxy(PROXY_TYPE_SOCKS5,
+                              str(socks_host), int(socks_port))
 
 
 class UDPSocket(object):
     def __init__(self, host, port):
-        self._address = (host, int(port))
+        self._address = (str(host), int(port))
         self._socket = socket.socket(AF_INET, SOCK_DGRAM)
 
     def connect(self):
@@ -118,7 +120,7 @@ class ProxyConnection(Connection):
     def __init__(self, host, port, proxy_host, proxy_port):
         self.proxy_host = proxy_host
         self.proxy_port = proxy_port
-        super(Connection, self).__init__(host, port)
+        super(ProxyConnection, self).__init__(host, port)
 
 
 class TCPSocks4ProxyConnection(ProxyConnection):

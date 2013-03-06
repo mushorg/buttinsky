@@ -60,8 +60,9 @@ class CLI(cmd.Cmd):
         """
         args = arg.split(' ')
         try:
-            if validate.irc_validate(args[1]):
-                ret = self.conn.load(args[0], args[1])
+            validate.irc_validate(args[1])
+            ret = self.conn.load(args[0], args[1])
+            print ret
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err

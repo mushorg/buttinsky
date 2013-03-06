@@ -15,6 +15,18 @@ irc_schema = {
                 "connection_protocol_type": {
                     "type": "string"
                 },
+                "proxy_type": {
+                    "type": "string",
+                    "blank": True
+                },
+                "proxy_host": {
+                    "type": "string",
+                    "required": False
+                },
+                "proxy_port": {
+                    "type": "string",
+                    "required": False
+                },
                 "log_plugins": {
                     "type": "string",
                 },
