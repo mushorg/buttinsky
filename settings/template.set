@@ -1,7 +1,7 @@
 {"config": {
   "protocol_plugin": "irc",
   "connection_protocol_type": "TCP",
-  "proxy_type": "socks4",
+  "proxy_type": "socks5",
   "proxy_host": "localhost",
   "proxy_port": "9050",
   "log_plugins": "print",
