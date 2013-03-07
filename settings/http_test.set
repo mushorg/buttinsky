@@ -4,12 +4,16 @@
             "host": "whatismyipaddress.com",
             "port": "80",
             "protocol_type": "TCP",
-            "reconn_attempts": "2"
+            "reconn_attempts": "2",
+            "proxy_type": "socks5",
+            "proxy_host": "localhost",
+            "proxy_port": "9050"
         },
         "log": {
             "plugins": "print"
         },
         "protocol": {
+            "plugin": "HTTP",
             "default_method": "GET",
             "default_URI": "/",
             "default_version": "HTTP/1.1",

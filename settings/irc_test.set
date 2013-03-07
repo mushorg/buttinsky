@@ -4,15 +4,18 @@
             "host": "irc.freenode.net",
             "port": "6667",
             "protocol_type": "TCP",
-            "reconn_attempts": "2"
+            "reconn_attempts": "2",
+            "proxy_type": "",
+            "proxy_host": "",
+            "proxy_port": ""
         },
         "log": {
             "plugins": "print"
         },
         "protocol": {
             "plugin": "IRC",
-            "nick": "NICCCKI",
-            "channel": "#testasdfff, #testasdeee"
+            "nick": "buttinsky-test",
+            "channel": "#buttinsky-dev"
         },
         "behavior": {
             "plugin": "simple_response"
