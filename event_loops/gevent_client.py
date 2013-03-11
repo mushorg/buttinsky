@@ -182,10 +182,15 @@ class Client(object):
         self.conn.oqueue.put(s)
 
     def _event_loop(self):
+        try:
+            message = Message(self.conn.iqueue.get_nowait())
+        except queue.Empty:
+            message = Message()
+
         while True:
-            line = self.conn.iqueue.get()
             if self.layer1 != None:
-                self.layer1.receive(Message(line))
+                self.layer1.receive(message)
+            message = Message(self.conn.iqueue.get())
 
 
 class Layer1(LayerPlugin):
