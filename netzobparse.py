@@ -2,6 +2,23 @@
 # Copyright (C) 2013 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
+"""
+
+Parses a Netzob project exported as XML.
+
+Handles state machine updates based on protocol model and input to handleInput.
+Currently a PoC. The following protocol shows model of behaviors/models/customNetzobIRCModel.xml
+
+On channel join:
+Bot: im alive
+Botherder: hail the master
+Bot: hello world, my name is <settings($nick)>
+Botherder: ddos <var($domain)>
+Bot: ddosing <var($domain)>
+
+"""
+
+
 import binascii
 from xml.dom import minidom
 
