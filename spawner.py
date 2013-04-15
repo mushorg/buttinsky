@@ -13,7 +13,7 @@ from event_loops import gevent_client
 from configobj import ConfigObj
 
 from protocols import irc, http
-from behaviors import simple_response, address_check
+from behaviors import simple_response, address_check, custom_irc_protocol
 from modules import reporter_handler
 from stack import Layer
 
@@ -161,11 +161,14 @@ class MonitorSpawner(object):
 
         if config["behavior"]["plugin"] == "simple_response":
             behavior = simple_response.SimpleResponse()
+        elif config["behavior"]["plugin"] == "custom_irc_protocol":
+            behavior = custom_irc_protocol.CustomIRCProtocol()
         elif config["behavior"]["plugin"] == "address_check":
             behavior = address_check.AddressCheck()
 
         layer_protocol = Layer(protocol, layer_log)
         layer_behavior = Layer(behavior, layer_protocol)
+        layer_behavior.settings(config)
         layer_protocol.settings(config)
 
         layer_log.setUpper(layer_protocol)

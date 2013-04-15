@@ -18,7 +18,7 @@
             "channel": "#buttinsky-dev"
         },
         "behavior": {
-            "plugin": "simple_response"
+            "plugin": "custom_irc_protocol"
         }
     }
 }
