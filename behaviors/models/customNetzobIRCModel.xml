@@ -1,10 +1,10 @@
-<netzob:project xmlns:netzob="http://www.netzob.org/project" id="1b200347-7481-4115-b6dc-d376020e067f" path="projects/1b200347-7481-4115-b6dc-d376020e067f" creation_date="2013-04-14T18:04:52" name="Buttinsky">
+<netzob:project xmlns:netzob="http://www.netzob.org/project" id="b08e8c32-742e-4743-85e2-656aa84050a9" path="projects/b08e8c32-742e-4743-85e2-656aa84050a9" creation_date="2013-04-17T18:44:59" name="Butt3">
   <netzob:configuration>
     <netzob:vocabulary_inference>
       <netzob:equivalence_threshold>100</netzob:equivalence_threshold>
       <netzob:orphan_reduction>false</netzob:orphan_reduction>
       <netzob:nb_iteration>100</netzob:nb_iteration>
-      <netzob:do_internal_slick>false</netzob:do_internal_slick>
+      <netzob:do_internal_slick>true</netzob:do_internal_slick>
       <netzob:display_messages>true</netzob:display_messages>
       <netzob:display_symbol_structure>false</netzob:display_symbol_structure>
       <netzob:display_console>false</netzob:display_console>
@@ -19,7 +19,7 @@
   </netzob:configuration>
   <netzob:vocabulary>
     <netzob:messages>
-      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="77743641-c4e7-4a98-9ba7-006585411533" timestamp="0.0" xsi:type="netzob-common:FileMessage">
+      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="2e572f18-0c21-4afb-a267-c1929a799686" timestamp="0.0" xsi:type="netzob-common:FileMessage">
         <netzob-common:data>696d20616c697665206d6173746572</netzob-common:data>
         <netzob-common:lineNumber>0</netzob-common:lineNumber>
         <netzob-common:filename>/home/peppe/Downloads/Netzob-0.4.1/test</netzob-common:filename>
@@ -28,7 +28,7 @@
         <netzob-common:owner>none</netzob-common:owner>
         <netzob-common:size>158</netzob-common:size>
       </netzob-common:message>
-      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="8f7ae75b-abab-40cd-8b78-6e4d414af3e8" timestamp="0.0" xsi:type="netzob-common:FileMessage">
+      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="3f74edd3-fd4f-4372-a9f4-6971406608dd" timestamp="0.0" xsi:type="netzob-common:FileMessage">
         <netzob-common:data>6861696c20746865206d6173746572</netzob-common:data>
         <netzob-common:lineNumber>0</netzob-common:lineNumber>
         <netzob-common:filename>/home/peppe/Downloads/Netzob-0.4.1/test</netzob-common:filename>
@@ -37,7 +37,7 @@
         <netzob-common:owner>none</netzob-common:owner>
         <netzob-common:size>158</netzob-common:size>
       </netzob-common:message>
-      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="71cf3db6-bcc2-48ae-b283-89a46a07bb2a" timestamp="0.0" xsi:type="netzob-common:FileMessage">
+      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="159116e9-d9a5-49cf-8ea1-41cee3b61b75" timestamp="0.0" xsi:type="netzob-common:FileMessage">
         <netzob-common:data>68656c6c6f20776f726c642c206d79206e616d65206973204b6c6173</netzob-common:data>
         <netzob-common:lineNumber>0</netzob-common:lineNumber>
         <netzob-common:filename>/home/peppe/Downloads/Netzob-0.4.1/test</netzob-common:filename>
@@ -46,7 +46,7 @@
         <netzob-common:owner>none</netzob-common:owner>
         <netzob-common:size>158</netzob-common:size>
       </netzob-common:message>
-      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="f1a1438e-51b5-4433-b02f-7228e6fa97c8" timestamp="0.0" xsi:type="netzob-common:FileMessage">
+      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="599b03a3-b067-4e28-a401-3d66c319fb98" timestamp="0.0" xsi:type="netzob-common:FileMessage">
         <netzob-common:data>64646f73206d74676f782e636f6d</netzob-common:data>
         <netzob-common:lineNumber>0</netzob-common:lineNumber>
         <netzob-common:filename>/home/peppe/Downloads/Netzob-0.4.1/test</netzob-common:filename>
@@ -55,7 +55,7 @@
         <netzob-common:owner>none</netzob-common:owner>
         <netzob-common:size>158</netzob-common:size>
       </netzob-common:message>
-      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="de0db09e-ba8c-4677-a9c8-22974452b4e2" timestamp="0.0" xsi:type="netzob-common:FileMessage">
+      <netzob-common:message xmlns:netzob-common="http://www.netzob.org/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="a71ad733-cc5a-4642-8285-1659782af24f" timestamp="0.0" xsi:type="netzob-common:FileMessage">
         <netzob-common:data>64646f73696e67206d74676f782e636f6d</netzob-common:data>
         <netzob-common:lineNumber>0</netzob-common:lineNumber>
         <netzob-common:filename>/home/peppe/Downloads/Netzob-0.4.1/test</netzob-common:filename>
@@ -66,20 +66,19 @@
       </netzob-common:message>
     </netzob:messages>
     <netzob:symbols>
-      <netzob:symbol id="a6c3fa3f-1332-4cdc-a40a-9357f31d3f11">
+      <netzob:symbol id="09dbfc4b-b493-4202-bf85-516aa7ee57be">
         <netzob:messages-ref>
-          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="77743641-c4e7-4a98-9ba7-006585411533"/>
+          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="2e572f18-0c21-4afb-a267-c1929a799686"/>
         </netzob:messages-ref>
-        <netzob:field id="6d36b6f3-4757-4d86-b678-b8889048fb07" name="ALIVE" alignment="696d20616c697665206d6173746572" score="0.0">
+        <netzob:field id="a3337fea-05ec-4ad3-a85f-1f3cbab5b63b" name="Alive" alignment="696d20616c697665206d6173746572" score="0.0">
           <netzob:regex>(.{,})</netzob:regex>
           <netzob:format>hex</netzob:format>
           <netzob:unitsize>none</netzob:unitsize>
           <netzob:sign>unsigned</netzob:sign>
           <netzob:endianess>big-endian</netzob:endianess>
-          <netzob:description></netzob:description>
           <netzob:color>blue</netzob:color>
-          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="41c2ad18-31e4-4db7-84b0-371b71cbf302" name="Default variable of ALIVE" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-            <netzob:variable id="66da6f3c-4c27-42b8-b2da-3bca36add20c" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="0f9c2650-28b6-4d9b-bc72-27acbae88577" name="Default variable of Alive" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+            <netzob:variable id="39d8254d-635b-4fa4-ade7-b487850cb8d0" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
               <netzob:sized>True</netzob:sized>
               <netzob:type>Binary</netzob:type>
               <netzob:originalValue>011010010110110100100000011000010110110001101001011101100110010100100000011011010110000101110011011101000110010101110010</netzob:originalValue>
@@ -89,19 +88,18 @@
             </netzob:variable>
           </netzob:variable>
           <netzob:fields>
-            <netzob:field id="ef958691-4e9a-42dd-8652-0f065184d569" name="Field 0" alignment="" score="0.0">
+            <netzob:field id="5df8a6c7-52a8-4869-9cc8-203996e22071" name="Field 0" alignment="" score="0.0">
               <netzob:regex>(696d20616c697665206d6173746572)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>black</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="10929cfe-c9ae-45cf-9b49-58b3739d93af" name="Default variable" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="b1ae7d4e-a61c-49f4-b73c-5ff7a37adea4" name="Default variable" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                 <netzob:sized>True</netzob:sized>
-                <netzob:type>Binary</netzob:type>
-                <netzob:originalValue>011010010110110100100000011000010110110001101001011101100110010100100000011011010110000101110011011101000110010101110010</netzob:originalValue>
-                <netzob:minChars>120</netzob:minChars>
+                <netzob:type>Word</netzob:type>
+                <netzob:originalValue>im alive master</netzob:originalValue>
+                <netzob:minChars>15</netzob:minChars>
                 <netzob:maxChars>120</netzob:maxChars>
                 <netzob:delimiter>None</netzob:delimiter>
               </netzob:variable>
@@ -110,20 +108,19 @@
           </netzob:fields>
         </netzob:field>
       </netzob:symbol>
-      <netzob:symbol id="2a4c49df-8ea4-4900-89d1-80a2dbe2b6c8">
+      <netzob:symbol id="7efcfdc8-bb50-4367-90e2-b4455b86c399">
         <netzob:messages-ref>
-          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="8f7ae75b-abab-40cd-8b78-6e4d414af3e8"/>
+          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="3f74edd3-fd4f-4372-a9f4-6971406608dd"/>
         </netzob:messages-ref>
-        <netzob:field id="ef06471b-ea53-4846-9a7a-51c7124c3ab2" name="HAIL" alignment="6861696c20746865206d6173746572" score="0.0">
+        <netzob:field id="56ca5c56-1e5b-45d5-acd2-248658fe84cd" name="Hail" alignment="6861696c20746865206d6173746572" score="0.0">
           <netzob:regex>(.{,})</netzob:regex>
           <netzob:format>hex</netzob:format>
           <netzob:unitsize>none</netzob:unitsize>
           <netzob:sign>unsigned</netzob:sign>
           <netzob:endianess>big-endian</netzob:endianess>
-          <netzob:description></netzob:description>
           <netzob:color>blue</netzob:color>
-          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="a0964334-023c-4a76-89a7-cb05c4d5887f" name="Default variable of HAIL" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-            <netzob:variable id="fbe76390-ace4-489c-b017-6090a1d68cfc" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="5e1e132f-1b9c-4be6-a220-36a42158520c" name="Default variable of Hail" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+            <netzob:variable id="fe3c6cf5-e264-4037-86ad-9f704dc9e943" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
               <netzob:sized>True</netzob:sized>
               <netzob:type>Binary</netzob:type>
               <netzob:originalValue>011010000110000101101001011011000010000001110100011010000110010100100000011011010110000101110011011101000110010101110010</netzob:originalValue>
@@ -133,19 +130,18 @@
             </netzob:variable>
           </netzob:variable>
           <netzob:fields>
-            <netzob:field id="7aa1e96a-677f-4081-b94b-2a801e095b50" name="Field 0" alignment="" score="0.0">
+            <netzob:field id="cdfc51ac-f33e-4729-914b-cd47d7108b27" name="Field 0" alignment="" score="0.0">
               <netzob:regex>(6861696c20746865206d6173746572)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>black</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="fce106a7-d051-4c10-a45b-06d1e3b428c3" name="Default variable" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="9ece427f-3c35-4c5c-9d26-593a9ce79f1a" name="Default variable" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                 <netzob:sized>True</netzob:sized>
-                <netzob:type>Binary</netzob:type>
-                <netzob:originalValue>011010000110000101101001011011000010000001110100011010000110010100100000011011010110000101110011011101000110010101110010</netzob:originalValue>
-                <netzob:minChars>120</netzob:minChars>
+                <netzob:type>Word</netzob:type>
+                <netzob:originalValue>hail the master</netzob:originalValue>
+                <netzob:minChars>15</netzob:minChars>
                 <netzob:maxChars>120</netzob:maxChars>
                 <netzob:delimiter>None</netzob:delimiter>
               </netzob:variable>
@@ -154,20 +150,19 @@
           </netzob:fields>
         </netzob:field>
       </netzob:symbol>
-      <netzob:symbol id="a18e366d-bc59-4326-8c99-70b19bed0ada">
+      <netzob:symbol id="ea06c06b-d664-40dc-b26c-22440d3b7967">
         <netzob:messages-ref>
-          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="71cf3db6-bcc2-48ae-b283-89a46a07bb2a"/>
+          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="159116e9-d9a5-49cf-8ea1-41cee3b61b75"/>
         </netzob:messages-ref>
-        <netzob:field id="a27044b6-674b-4a11-bd54-dabfcb3e0de5" name="HELLO" alignment="68656c6c6f20776f726c642c206d79206e616d65206973204b6c6173" score="0.0">
+        <netzob:field id="599093f5-8517-4282-a938-d814a9a952c4" name="Hello" alignment="68656c6c6f20776f726c642c206d79206e616d65206973204b6c6173" score="0.0">
           <netzob:regex>(.{,})</netzob:regex>
           <netzob:format>hex</netzob:format>
           <netzob:unitsize>none</netzob:unitsize>
           <netzob:sign>unsigned</netzob:sign>
           <netzob:endianess>big-endian</netzob:endianess>
-          <netzob:description></netzob:description>
           <netzob:color>blue</netzob:color>
-          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="ef554dd6-9789-46f0-862a-7c9448ef77ee" name="Default variable of HELLO" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-            <netzob:variable id="22b649d4-0177-47c4-81c9-b610ffadb3dd" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="1864e05f-d131-4dc2-a0a6-ea6b9c39bd6c" name="Default variable of Hello" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+            <netzob:variable id="e7e30b91-82a1-4108-ab13-43530b300c70" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
               <netzob:sized>True</netzob:sized>
               <netzob:type>Binary</netzob:type>
               <netzob:originalValue>01101000011001010110110001101100011011110010000001110111011011110111001001101100011001000010110000100000011011010111100100100000011011100110000101101101011001010010000001101001011100110010000001001011011011000110000101110011</netzob:originalValue>
@@ -177,41 +172,39 @@
             </netzob:variable>
           </netzob:variable>
           <netzob:fields>
-            <netzob:field id="a0fdaa36-9e64-4bb7-bc98-4c2903b750a6" name="__sep__" alignment="" score="0.0">
+            <netzob:field id="5238f5f8-4918-4c53-b75c-4a64dc5edbd6" name="__sep__" alignment="" score="0.0">
               <netzob:regex>(68656c6c6f20776f726c642c206d79206e616d6520697320)?</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="ae418064-b55c-4b1b-85b9-8b32d0a1a2ea" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="71d03ec7-5322-4921-bd70-d6859ea24c2d" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="dbeb3139-1225-4f2f-9046-b590a7962104" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="a6aca7e0-4e7a-493a-a96e-96f09a9a33a3" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100001011000010000001101101011110010010000001101110011000010110110101100101001000000110100101110011100000</netzob:originalValue>
-                  <netzob:minChars>190</netzob:minChars>
-                  <netzob:maxChars>198</netzob:maxChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue>hello world, my name is </netzob:originalValue>
+                  <netzob:minChars>24</netzob:minChars>
+                  <netzob:maxChars>192</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
               <netzob:fields/>
             </netzob:field>
-            <netzob:field id="94eed687-f248-4667-9d52-2f4e5fd14d20" name="Name" alignment="" score="0.0">
+            <netzob:field id="fcdc0eab-8b68-4f80-bd8b-2eccfa035ac0" name="Name" alignment="" score="0.0">
               <netzob:regex>((?:(?!68656c6c6f20776f726c642c206d79206e616d6520697320).)*)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="28f3e4b3-c986-4be7-a559-a3152e947bcf" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="c3b741d5-4f44-424f-9c20-0f7a1d48e119" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="True" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="e20ef5f7-3ed5-4533-987e-bd08df6ac461" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="5c87914f-78cd-40db-b600-31dea3260b44" name="Var" xsi:type="netzob:DataVariable" mutable="True" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>0011110001110011011001010111010001110100011010010110111001100111011100110010100000100100011011100110100101100011011010110010100100111110</netzob:originalValue>
-                  <netzob:minChars>136</netzob:minChars>
-                  <netzob:maxChars>136</netzob:maxChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue>settings($nick)</netzob:originalValue>
+                  <netzob:minChars>15</netzob:minChars>
+                  <netzob:maxChars>15</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
@@ -220,20 +213,19 @@
           </netzob:fields>
         </netzob:field>
       </netzob:symbol>
-      <netzob:symbol id="972d7304-188a-49ce-b8f0-9f17d463f9c3">
+      <netzob:symbol id="40f337a7-ca47-424a-9b54-f1c668c209c0">
         <netzob:messages-ref>
-          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="f1a1438e-51b5-4433-b02f-7228e6fa97c8"/>
+          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="599b03a3-b067-4e28-a401-3d66c319fb98"/>
         </netzob:messages-ref>
-        <netzob:field id="20251d81-145f-4df1-a9e3-328821f659a3" name="DDOS_CMD" alignment="64646f73206d74676f782e636f6d" score="0.0">
+        <netzob:field id="32d4cba6-cbf1-4f76-8020-3fae5a67ac8c" name="DdosCmd" alignment="64646f73206d74676f782e636f6d" score="0.0">
           <netzob:regex>(.{,})</netzob:regex>
           <netzob:format>hex</netzob:format>
           <netzob:unitsize>none</netzob:unitsize>
           <netzob:sign>unsigned</netzob:sign>
           <netzob:endianess>big-endian</netzob:endianess>
-          <netzob:description></netzob:description>
           <netzob:color>blue</netzob:color>
-          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="716b5627-3786-4758-8a42-2b0c738cc459" name="Default variable of DDOS_CMD" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-            <netzob:variable id="687dbf3d-2968-4737-908d-507943829c78" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="0a779a78-955f-4954-805c-bd791d4af4fb" name="Default variable of DdosCmd" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+            <netzob:variable id="03ead9c3-7133-4fc3-ac96-ccf5586304f5" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
               <netzob:sized>True</netzob:sized>
               <netzob:type>Binary</netzob:type>
               <netzob:originalValue>0110010001100100011011110111001100100000011011010111010001100111011011110111100000101110011000110110111101101101</netzob:originalValue>
@@ -243,61 +235,58 @@
             </netzob:variable>
           </netzob:variable>
           <netzob:fields>
-            <netzob:field id="a57e567d-03fe-49c8-ae9c-61b92becc16d" name="Name" alignment="" score="0.0">
+            <netzob:field id="f10dcf5f-0630-4a84-9e6e-5888a508313e" name="Name" alignment="" score="0.0">
               <netzob:regex>((?:(?!20).)*)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="27e99207-b908-485e-bbfa-c84ffdd3e8f3" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="5e668a66-f452-42b7-be92-b2fb0263cb74" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="599bfb37-1f9b-4494-8a33-4d587918d1bc" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="78358582-ad83-4bda-8f34-afc7b23655f4" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>01100100011001000110111101110011</netzob:originalValue>
-                  <netzob:minChars>32</netzob:minChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue>ddos</netzob:originalValue>
+                  <netzob:minChars>4</netzob:minChars>
                   <netzob:maxChars>32</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
               <netzob:fields/>
             </netzob:field>
-            <netzob:field id="d7c2761c-f34e-41db-86dc-105f4be98862" name="__sep__" alignment="" score="0.0">
+            <netzob:field id="4d8bb0b4-90cc-4f08-93e2-a42ab84b7b97" name="__sep__" alignment="" score="0.0">
               <netzob:regex>(20)?</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="8a27c212-0943-4ea1-be69-f3610654c2fc" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="209f7eca-8407-4231-b22d-86204281c29f" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="96130474-ed97-4f23-83f9-3cd6f8163cc0" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="0a630409-df7f-46c2-9146-e0f655fa9bc1" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>00100000</netzob:originalValue>
-                  <netzob:minChars>8</netzob:minChars>
-                  <netzob:maxChars>8</netzob:maxChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue> </netzob:originalValue>
+                  <netzob:minChars>1</netzob:minChars>
+                  <netzob:maxChars>1</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
               <netzob:fields/>
             </netzob:field>
-            <netzob:field id="c90b63e3-b98a-4212-bf1f-14f52d7f83b1" name="Domain" alignment="" score="0.0">
+            <netzob:field id="dd4a7f67-413b-4898-8fc7-f724b314e60f" name="Name" alignment="" score="0.0">
               <netzob:regex>((?:(?!20).)*)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="a432e4aa-85b3-4ee1-9a0a-7855fc099840" name="Default variable of Domain" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="310f8d2f-5af4-4d06-ae7d-9f44f21f90bd" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="True" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="2552bd33-b71c-4676-8ff5-e796bcb97b52" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="ae709426-a99a-4431-bfae-b99552282a66" name="Domain" xsi:type="netzob:DataVariable" mutable="True" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>0011110001110110011000010111001000101000001001000110010001101111011011010110000101101001011011100010100100111110</netzob:originalValue>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue></netzob:originalValue>
                   <netzob:minChars>0</netzob:minChars>
-                  <netzob:maxChars>112</netzob:maxChars>
+                  <netzob:maxChars>1</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
@@ -306,20 +295,19 @@
           </netzob:fields>
         </netzob:field>
       </netzob:symbol>
-      <netzob:symbol id="b6c05d51-ba20-45c0-a491-f02f351d3238">
+      <netzob:symbol id="901f981e-e696-4811-bc02-8304ce36a118">
         <netzob:messages-ref>
-          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="de0db09e-ba8c-4677-a9c8-22974452b4e2"/>
+          <netzob-common:message-ref xmlns:netzob-common="http://www.netzob.org/common" id="a71ad733-cc5a-4642-8285-1659782af24f"/>
         </netzob:messages-ref>
-        <netzob:field id="5af7a94a-427e-4226-807d-4e4edaef5209" name="DDOS_ACK" alignment="64646f73696e67206d74676f782e636f6d" score="0.0">
+        <netzob:field id="64868fa9-05b5-443e-9cea-c2376e597252" name="DdosAck" alignment="64646f73696e67206d74676f782e636f6d" score="0.0">
           <netzob:regex>(.{,})</netzob:regex>
           <netzob:format>hex</netzob:format>
           <netzob:unitsize>none</netzob:unitsize>
           <netzob:sign>unsigned</netzob:sign>
           <netzob:endianess>big-endian</netzob:endianess>
-          <netzob:description></netzob:description>
           <netzob:color>blue</netzob:color>
-          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="0473bff6-7c14-461e-9518-c64946018320" name="Default variable of DDOS_ACK" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-            <netzob:variable id="39b6de18-c12e-43dd-8261-92734946227c" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+          <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="38d56d46-251e-47f6-83d2-4f6e8f242a74" name="Default variable of DdosAck" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+            <netzob:variable id="303423d2-6fff-4fe9-9551-d1763dd236de" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
               <netzob:sized>True</netzob:sized>
               <netzob:type>Binary</netzob:type>
               <netzob:originalValue>0110010001100100011011110111001101101001011011100110011100100000011011010111010001100111011011110111100000101110011000110110111101101101</netzob:originalValue>
@@ -329,61 +317,58 @@
             </netzob:variable>
           </netzob:variable>
           <netzob:fields>
-            <netzob:field id="880a99e4-976a-4887-9357-17bad74bdccd" name="Name" alignment="" score="0.0">
+            <netzob:field id="8fffe246-efc5-454e-9ff9-e79c4740c4a6" name="Name" alignment="" score="0.0">
               <netzob:regex>((?:(?!20).)*)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="e591d868-37b8-41ab-800c-d672c6477d13" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="840fc635-7338-420e-87f2-7eace027ded4" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="afd57759-7c9b-48b5-9bec-7b7dd26429e0" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="5fcd74ed-e571-4ff4-abf4-d4963c0cbe88" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>01100100011001000110111101110011011010010110111001100111</netzob:originalValue>
-                  <netzob:minChars>56</netzob:minChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue>ddosing</netzob:originalValue>
+                  <netzob:minChars>7</netzob:minChars>
                   <netzob:maxChars>56</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
               <netzob:fields/>
             </netzob:field>
-            <netzob:field id="13f814f6-2c45-4620-8ae7-48b6627c39bd" name="__sep__" alignment="" score="0.0">
+            <netzob:field id="f21c4d0e-8785-4348-a0a9-68c32f7543a0" name="__sep__" alignment="" score="0.0">
               <netzob:regex>(20)?</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="14407918-cba4-4654-a896-a130b94850fe" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="8914b8cb-dae2-402d-9068-fff5df03b392" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="286c0a90-5bd0-4fb1-86e7-e6e8d0a8a695" name="Default variable of __sep__" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="94eb0cd7-2d90-46a4-bd58-6e0818a10f1c" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="False" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>00100000</netzob:originalValue>
-                  <netzob:minChars>8</netzob:minChars>
-                  <netzob:maxChars>8</netzob:maxChars>
+                  <netzob:type>Word</netzob:type>
+                  <netzob:originalValue> </netzob:originalValue>
+                  <netzob:minChars>1</netzob:minChars>
+                  <netzob:maxChars>1</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
               <netzob:fields/>
             </netzob:field>
-            <netzob:field id="0c6b85d2-0b04-406b-8c0a-f57c2a1b81fe" name="Domain" alignment="" score="0.0">
+            <netzob:field id="fb0d6e02-687c-4d79-b845-ebb76f58e813" name="Name" alignment="" score="0.0">
               <netzob:regex>((?:(?!20).)*)</netzob:regex>
               <netzob:format>string</netzob:format>
               <netzob:unitsize>none</netzob:unitsize>
               <netzob:sign>unsigned</netzob:sign>
               <netzob:endianess>big-endian</netzob:endianess>
-              <netzob:description></netzob:description>
               <netzob:color>blue</netzob:color>
-              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="ca5c11ee-083b-4c2c-b48c-616c5f187644" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
-                <netzob:variable id="2cca1392-b8bb-44a5-99e0-210f7f11b143" name="Default child variable 0" xsi:type="netzob:DataVariable" mutable="True" learnable="False">
+              <netzob:variable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="d56962b4-88c1-4cf8-8c6a-e94ed39f3517" name="Default variable of Name" xsi:type="netzob:AlternateVariable" mutable="True" learnable="False">
+                <netzob:variable id="3150dbe5-fad5-4bfb-afd6-8f7e1750e271" name="Default child variable 0" xsi:type="netzob:ComputedRelationVariable" mutable="True" learnable="False">
                   <netzob:sized>True</netzob:sized>
-                  <netzob:type>Binary</netzob:type>
-                  <netzob:originalValue>0011110001110110011000010111001000101000001001000110010001101111011011010110000101101001011011100010100100111110</netzob:originalValue>
+                  <netzob:type>Size Relation</netzob:type>
+                  <netzob:ref>ae709426-a99a-4431-bfae-b99552282a66</netzob:ref>
                   <netzob:minChars>0</netzob:minChars>
-                  <netzob:maxChars>112</netzob:maxChars>
+                  <netzob:maxChars>100</netzob:maxChars>
                   <netzob:delimiter>None</netzob:delimiter>
                 </netzob:variable>
               </netzob:variable>
@@ -394,47 +379,50 @@
       </netzob:symbol>
     </netzob:symbols>
     <netzob:sessions>
-      <netzob-common:session xmlns:netzob-common="http://www.netzob.org/common" id="240412b0-13a1-4968-aa72-b7d083752be8" name="Session 1" description="">
+      <netzob-common:session xmlns:netzob-common="http://www.netzob.org/common" id="5824aaeb-870e-41af-9000-9e090e5bebf5" name="Session 1" description="">
         <netzob-common:messages-ref>
-          <netzob-common:message-ref id="77743641-c4e7-4a98-9ba7-006585411533"/>
-          <netzob-common:message-ref id="8f7ae75b-abab-40cd-8b78-6e4d414af3e8"/>
-          <netzob-common:message-ref id="71cf3db6-bcc2-48ae-b283-89a46a07bb2a"/>
-          <netzob-common:message-ref id="f1a1438e-51b5-4433-b02f-7228e6fa97c8"/>
-          <netzob-common:message-ref id="de0db09e-ba8c-4677-a9c8-22974452b4e2"/>
+          <netzob-common:message-ref id="2e572f18-0c21-4afb-a267-c1929a799686"/>
+          <netzob-common:message-ref id="3f74edd3-fd4f-4372-a9f4-6971406608dd"/>
+          <netzob-common:message-ref id="159116e9-d9a5-49cf-8ea1-41cee3b61b75"/>
+          <netzob-common:message-ref id="599b03a3-b067-4e28-a401-3d66c319fb98"/>
+          <netzob-common:message-ref id="a71ad733-cc5a-4642-8285-1659782af24f"/>
         </netzob-common:messages-ref>
+      </netzob-common:session>
+      <netzob-common:session xmlns:netzob-common="http://www.netzob.org/common" id="da5b5d5e-b131-448e-91f2-8edfd42851a1" name="Session 1" description="">
+        <netzob-common:messages-ref/>
       </netzob-common:session>
     </netzob:sessions>
   </netzob:vocabulary>
   <netzob:grammar>
-    <netzob:automata type="mmstd" initialState="51f9f283-3b14-4857-bd83-bd895328a147">
+    <netzob:automata type="mmstd" initialState="f70f5e4e-363a-4770-b649-04a9ec8882f1">
       <netzob:states>
-        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="51f9f283-3b14-4857-bd83-bd895328a147" name="JOIN" xsi:type="netzob:NormalState"/>
-        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="43be953a-2608-4d2f-88c9-0c5bf7329104" name="AUTH" xsi:type="netzob:NormalState"/>
-        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="7ad70657-2094-45e4-92a7-677128ef6ff4" name="CMD_LOOP" xsi:type="netzob:NormalState"/>
+        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="f70f5e4e-363a-4770-b649-04a9ec8882f1" name="Join" xsi:type="netzob:NormalState"/>
+        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="6ce548ba-06ec-4a12-a544-d68c9f3b06ce" name="Auth" xsi:type="netzob:NormalState"/>
+        <netzob:state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="b529bcf7-2b4d-455e-948c-89db3d5664a3" name="Cmd" xsi:type="netzob:NormalState"/>
       </netzob:states>
       <netzob:transitions>
-        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="eb414d6d-9ca1-41dc-9921-7127998ce37f" name="ALIVE" xsi:type="netzob:SemiStochasticTransition">
-          <netzob:startState>51f9f283-3b14-4857-bd83-bd895328a147</netzob:startState>
-          <netzob:endState>43be953a-2608-4d2f-88c9-0c5bf7329104</netzob:endState>
+        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="be53332f-34be-40ca-82ad-aa72edc39e6b" name="Alive" xsi:type="netzob:SemiStochasticTransition">
+          <netzob:startState>f70f5e4e-363a-4770-b649-04a9ec8882f1</netzob:startState>
+          <netzob:endState>6ce548ba-06ec-4a12-a544-d68c9f3b06ce</netzob:endState>
           <netzob:input symbol="EmptySymbol"/>
           <netzob:outputs>
-            <netzob:output time="100" probability="100.0" symbol="a6c3fa3f-1332-4cdc-a40a-9357f31d3f11"/>
+            <netzob:output time="100" probability="100.0" symbol="09dbfc4b-b493-4202-bf85-516aa7ee57be"/>
           </netzob:outputs>
         </netzob:transition>
-        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="3c329755-7677-442a-a220-3997eeb3e3ff" name="HAIL" xsi:type="netzob:SemiStochasticTransition">
-          <netzob:startState>43be953a-2608-4d2f-88c9-0c5bf7329104</netzob:startState>
-          <netzob:endState>7ad70657-2094-45e4-92a7-677128ef6ff4</netzob:endState>
-          <netzob:input symbol="2a4c49df-8ea4-4900-89d1-80a2dbe2b6c8"/>
+        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="1292b6bb-0aee-4cfe-8d1f-9d2194bc8a9c" name="Hello" xsi:type="netzob:SemiStochasticTransition">
+          <netzob:startState>6ce548ba-06ec-4a12-a544-d68c9f3b06ce</netzob:startState>
+          <netzob:endState>b529bcf7-2b4d-455e-948c-89db3d5664a3</netzob:endState>
+          <netzob:input symbol="7efcfdc8-bb50-4367-90e2-b4455b86c399"/>
           <netzob:outputs>
-            <netzob:output time="100" probability="100.0" symbol="a18e366d-bc59-4326-8c99-70b19bed0ada"/>
+            <netzob:output time="100" probability="100.0" symbol="ea06c06b-d664-40dc-b26c-22440d3b7967"/>
           </netzob:outputs>
         </netzob:transition>
-        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="1b8d7f35-5f0f-40e8-bad1-6e39366abcfb" name="DDOS" xsi:type="netzob:SemiStochasticTransition">
-          <netzob:startState>7ad70657-2094-45e4-92a7-677128ef6ff4</netzob:startState>
-          <netzob:endState>7ad70657-2094-45e4-92a7-677128ef6ff4</netzob:endState>
-          <netzob:input symbol="972d7304-188a-49ce-b8f0-9f17d463f9c3"/>
+        <netzob:transition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="ed7c0b1f-7807-4b65-867c-d78e21d605d5" name="Ddos" xsi:type="netzob:SemiStochasticTransition">
+          <netzob:startState>b529bcf7-2b4d-455e-948c-89db3d5664a3</netzob:startState>
+          <netzob:endState>b529bcf7-2b4d-455e-948c-89db3d5664a3</netzob:endState>
+          <netzob:input symbol="40f337a7-ca47-424a-9b54-f1c668c209c0"/>
           <netzob:outputs>
-            <netzob:output time="100" probability="100.0" symbol="b6c05d51-ba20-45c0-a491-f02f351d3238"/>
+            <netzob:output time="100" probability="100.0" symbol="901f981e-e696-4811-bc02-8304ce36a118"/>
           </netzob:outputs>
         </netzob:transition>
       </netzob:transitions>
