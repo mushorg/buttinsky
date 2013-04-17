@@ -63,6 +63,10 @@ class CLI(cmd.Cmd):
             validate.validate(args[1])
             ret = self.conn.load(args[0], args[1])
             print ret
+        except IndexError:
+            print "Not enough parameters: load <id> <filename>"
+        except IOError:
+            print "Invalid settings name. Use 'status' to get a list of available setting files."
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
