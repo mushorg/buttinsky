@@ -7,7 +7,8 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   
+
+   usage/index
    development/index
    installation/index
    extending/index
