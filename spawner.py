@@ -284,5 +284,6 @@ if __name__ == '__main__':
     server = SimpleXMLRPCServer((hostname, port))
     print "Listening on port 8000..."
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))
-    gevent.spawn(ButtinskyXMLRPCServer(messageQueue).load_sink)
+    if buttinsky_config["hpfeeds"]["enabled"] == "True":
+        gevent.spawn(ButtinskyXMLRPCServer(messageQueue).load_sink)
     server.serve_forever()
