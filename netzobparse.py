@@ -4,17 +4,28 @@
 
 """
 
-Parses a Netzob project exported as XML.
+- Parses a Netzob project exported as XML.
+- Handles state machine updates based on protocol model and input to handleInput. 
+- Botnet mimicking (symbol output) is done when a state transition occurs.
 
-Handles state machine updates based on protocol model and input to handleInput.
-Currently a PoC. The following protocol shows model of behaviors/models/customNetzobIRCModel.xml
+Currently a PoC. 
+The following protocol shows model of 'behaviors/models/customNetzobIRCModel.xml'
+and can be used for similar text based protocols such as IRC and HTTP.
 
 On channel join:
 Bot: im alive
 Botherder: hail the master
-Bot: hello world, my name is <settings($nick)>
-Botherder: ddos <var($domain)>
-Bot: ddosing <var($domain)>
+Bot: hello world, my name is settings($nick)
+Botherder: ddos $domain
+Bot: ddosing $domain
+
+TODO:
+
+- Support for several variables in protocol messages
+- Output symbols based on probability and add handle delay of certain response
+- Save unsupported protocol messages in delimiter separated logs (for further modeling 
+  of the unkown messages in Netzob).
+- Support binary protocols
 
 """
 
@@ -27,37 +38,63 @@ class NetzobModelParser(object):
 
     def __init__(self, path):
         self.STATES = []
-        self.SYMBOLS = {}
+        self.SYMBOLS = []
         self.TRANSITIONS = {}
         self.state = None
         self.__parse_model(path)
 
-    def handleInput(self, input, settings):
-        msg = None
+    def __findSymbol(self, id):
+        for s in self.SYMBOLS:
+            if s["id"] == id:
+                return s
+
+    def __findRef(self, id):
+        for s in self.SYMBOLS:
+            for f in s["fields"]:
+                if f["varId"] == id:
+                    return s
+
+    def handleInput(self, input, settings, init=False):
+        msg = ""
         if self.state == None:
             initialState = self.STATES[0]["id"]
             trans = self.TRANSITIONS[initialState]
-            if trans["input"] == None:
-                self.state = trans["endState"]
+            if trans["input"] == None and init:
                 symbol = trans["outputs"][0]
-                msg = self.SYMBOLS[symbol]
+                found = self.__findSymbol(symbol)
+                for i in found["fields"]:
+                    msg = msg + i["value"]
+                self.state = trans["endState"]
                 return msg
-        
+            return ""
+
         trans = self.TRANSITIONS[self.state]
-        inputSymbol = self.SYMBOLS[trans["input"]]
-        
+        found = self.__findSymbol(trans["input"])
+        inputSymbol = ""
+        for i in found["fields"]:
+            inputSymbol = inputSymbol + i["value"]
+         
         if input == inputSymbol:    
-            outputSymbol = self.SYMBOLS[trans["outputs"][0]]
-            if "<settings($nick)>" in outputSymbol:
-                msg = outputSymbol.replace("<settings($nick)>", settings["nick"].encode("ascii"))
-        else:
-            outputSymbol = self.SYMBOLS[trans["outputs"][0]]
-            if "<var($domain)>" in outputSymbol:
-                inputCmd = inputSymbol.split("<var($domain)>")[0].strip()
-                if inputCmd in input:
-                    domain = input.split(inputCmd)[1].strip()
-                    msg = outputSymbol.replace("<var($domain)>", domain)
-        if msg != None:
+            found = self.__findSymbol(trans["outputs"][0])          
+            outputSymbol = ""
+            for i in found["fields"]:
+                outputSymbol = outputSymbol + i["value"]
+            if "settings" in outputSymbol:
+                setting = outputSymbol.split("settings($")[1].split(")")[0]
+                msg = outputSymbol.replace("settings($" + setting + ")", settings[setting].encode("ascii"))
+        elif inputSymbol in input:
+            found = self.__findSymbol(trans["input"])
+            sp = input.split(inputSymbol)
+            found = self.__findSymbol(trans["outputs"][0])              
+            for i in found["fields"]:
+                if len(i["ref"]) > 0:
+                    for j in sp:
+                        if len(j) > 0:
+                            msg = msg + j              
+                else:
+                    msg = msg + i["value"]
+                
+        if msg != "":
             self.state = trans["endState"]
         return msg
 
@@ -81,19 +118,34 @@ class NetzobModelParser(object):
             f = s.getElementsByTagName("netzob:field")
             fields = s.getElementsByTagName("netzob:fields")
             string = ""
+            symbol = {}
+            symbol["id"] = symbolID
+            symbol["fields"] = list()
+
             for field in fields:
                 f = field.getElementsByTagName("netzob:field")
                 for entry in f:
                     format = entry.getElementsByTagName("netzob:format")
                     var = entry.getElementsByTagName("netzob:variable")
+                    for v in var:
+                        id = v.getAttribute("id").encode("ascii")
                     type = var[0].getElementsByTagName("netzob:type")
-                    type = type[0].firstChild.data
-                    value = var[0].getElementsByTagName("netzob:originalValue")
-                    if len(value) > 0:
-                        if type == "Binary":
-                            string = string + self.__bin2Ascii(value[0].firstChild.data)
-            self.SYMBOLS[symbolID] = string
-
+                    mutable = var[0].getAttribute("mutable").encode("ascii")
+                    type = type[0].firstChild.data.encode("ascii")
+                    ref = ""
+                    try:
+                        ref = var[0].getElementsByTagName("netzob:ref")
+                        ref = ref[0].firstChild.data.encode("ascii")
+                    except:
+                        pass
+                    try:
+                        value = var[0].getElementsByTagName("netzob:originalValue")
+                        value = value[0].firstChild.data.encode("ascii")
+                    except:
+                        value = ""
+                    symbol["fields"].append({"varId": id, "value": value,"ref":ref, "mutable":mutable})                   
+            self.SYMBOLS.append(symbol)                
+         
         for node in state:
             stateID = node.getAttribute("id").encode("ascii")
             stateName = node.getAttribute("name").encode("ascii")
@@ -118,5 +170,3 @@ class NetzobModelParser(object):
             if len(outSymbol) == 0:
                 outSymbol = None
             self.TRANSITIONS[startState] = {"endState": endState, "input": stateInput, "outputs": outSymbol}
-
-         

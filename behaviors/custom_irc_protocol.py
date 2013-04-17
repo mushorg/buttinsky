@@ -18,8 +18,8 @@ class CustomIRCProtocol(LayerPlugin):
             if "command" in m:
                 reply_msg = None
                 if m["command"] == "JOIN":
-                    reply_msg = self.stateMachine.handleInput(None, self.settings)
-                    if reply_msg == None:
+                    reply_msg = self.stateMachine.handleInput(None, self.settings, True)
+                    if len(reply_msg) == 0:
                         break
                     reply = dict()
                     reply["command"] = "PRIVMSG"
@@ -27,7 +27,7 @@ class CustomIRCProtocol(LayerPlugin):
                     messages.append(reply)
                 if m["command"] == "PRIVMSG":
                     reply_msg = self.stateMachine.handleInput(m["args"][1], self.settings)
-                    if reply_msg == None:
+                    if len(reply_msg) == 0:
                         break
                     reply = dict()
                     reply["command"] = "PRIVMSG"
