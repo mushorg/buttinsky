@@ -28,12 +28,12 @@ class Layer(object):
 
     def transmit(self, msg):
         msg = self.plugin.transmit(msg)
-        if self.lower != None:
+        if not self.lower:
             self.lower.transmit(msg)
 
     def receive(self, msg):
         msg = self.plugin.receive(msg)
-        if self.upper != None:
+        if not self.upper:
             self.upper.receive(msg)
         else:
             self.transmit(msg)
