@@ -49,6 +49,9 @@ class CLI(cmd.Cmd):
         """
         \033[1;30msyntax: echo <message> -- send message to echo function to test non-blocking functionality\033[0m
         """
+        if arg == "":
+            print "Invalid argument: echo <message>"
+            return
         try:
             ret = self.conn.echo(arg)
             print ret
@@ -95,6 +98,9 @@ class CLI(cmd.Cmd):
         """
         \033[1;30msyntax: stop <id> -- stop execution of monitor identified by id\033[0m
         """
+        if arg == "":
+            print "Invalid argument: stop <id>"
+            return
         try:
             ret = self.conn.stop(arg)
         except xmlrpclib.Fault as err:
@@ -105,6 +111,9 @@ class CLI(cmd.Cmd):
         """
         \033[1;30msyntax: restart <id> -- restart execution of monitor identified by id\033[0m
         """
+        if arg == "":
+            print "Invalid argument: restart <id>"
+            return
         try:
             ret = self.conn.restart(arg)
         except xmlrpclib.Fault as err:
@@ -144,7 +153,8 @@ class CLI(cmd.Cmd):
         sys.exit(1)
 
     def help_help(self):
-        print "\t\033[1;30msyntax: help <topic> -- Show help for a particular topic. List all commands if topic is not specified\033[0m"
+        print """\t\033[1;30msyntax: help <topic> -- Show help for a particular topic.
+        List all commands if topic is not specified\033[0m"""
 
     def default(self, arg):
         print "Unknown command: " + arg + "\n"
@@ -177,12 +187,12 @@ def main():
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt in ("-h"):
+        if opt in "-h":
             usage()
             sys.exit()
-        elif opt in ("-s"):
+        elif opt in "-s":
             server = arg
-        elif opt in ("-p"):
+        elif opt in "-p":
             port = arg
 
     url = "http://" + server + ":" + port + "/"
