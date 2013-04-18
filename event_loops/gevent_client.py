@@ -1,7 +1,6 @@
-# Code: https://github.com/SiteSupport/gevent
-# Doc (out-dated?): http://www.gevent.org/contents.html
-
-# Example from here: https://gist.github.com/1506694
+#!/usr/bin/env python
+# Copyright (C) 2012 Buttinsky Developers.
+# See 'COPYING' for copying permission.
 
 import gevent
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
@@ -188,13 +187,14 @@ class Client(object):
             message = Message()
 
         while True:
-            if self.layer1 != None:
+            if self.layer1 and message and message.data != "":
                 self.layer1.receive(message)
             message = Message(self.conn.iqueue.get())
 
 
 class Layer1(LayerPlugin):
     def __init__(self, client):
+        LayerPlugin.__init__(self)
         self.client = client
 
     def receive(self, msg):

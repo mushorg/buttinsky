@@ -34,16 +34,18 @@ class HTTPProtocol(LayerPlugin):
 
     def receive(self, msg):
         response = msg.data
-
-        status, response = response.split("\r\n", 1)
-        version, code, reason = status.split(" ", 2)
-        response, body = response.split("\r\n\r\n", 1)
-        headers = mtmsg(strio(response))
-
-        return Message({
-            "version": version,
-            "code": code,
-            "reason": reason,
-            "headers": headers,
-            "body": body,
-        })
+        try:
+            status, response = response.split("\r\n", 1)
+            version, code, reason = status.split(" ", 2)
+            response, body = response.split("\r\n\r\n", 1)
+            headers = mtmsg(strio(response))
+        except:
+            return None
+        else:
+            return Message({
+                "version": version,
+                "code": code,
+                "reason": reason,
+                "headers": headers,
+                "body": body,
+            })
