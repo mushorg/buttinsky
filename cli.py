@@ -123,7 +123,10 @@ class CLI(cmd.Cmd):
     def do_list(self, arg):
         """
         \033[1;30msyntax: list <file> -- list contens of file\033[0m
-        """ 
+        """
+        if arg == "":
+            print "Invalid argument: list <file>"
+            return
         try:
             ret = self.conn.list(arg)
             print "\n\033[1;30mContents of " + arg + "\033[0m\n"
@@ -138,6 +141,9 @@ class CLI(cmd.Cmd):
         """
         \033[1;30msyntax: delete <file> -- delete configuration specified in file\033[0m
         """
+        if arg == "":
+            print "Invalid argument: delete <file>"
+            return
         try:
             ret = self.conn.delete(arg)
         except IOError:
