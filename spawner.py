@@ -57,7 +57,7 @@ class MonitorList(object):
         stack = None
         try:
             stack = self.__stackList[identifier]
-        except:
+        except IndexError:
             pass
         return stack
 
@@ -67,7 +67,7 @@ class MonitorList(object):
         setting = None
         try:
             setting = self.__settingList[identifier]
-        except:
+        except IndexError:
             pass
         return setting
 
@@ -77,7 +77,7 @@ class MonitorList(object):
         filename = None
         try:
             filename = self.__fileList[identifier]
-        except:
+        except IndexError:
             pass
         return filename
 
@@ -216,7 +216,7 @@ class ButtinskyXMLRPCServer(object):
         self.queue = messageQueue
 
     def load_sink(self):
-        hpfeed_sink = hpfeeds_sink.HPFeedsSink()
+        hpfeeds_sink.HPFeedsSink()
 
     def load(self, identifier, filename):
         if self.ml.getStack(identifier):
@@ -226,7 +226,7 @@ class ButtinskyXMLRPCServer(object):
         config = data["config"]
         self.queue.put([CONFIG_MONITOR, identifier, config, filename])
         json_data.close()
-        return ""
+        return filename + " loaded with identifier: " + identifier
 
     def create(self, filename, config):
         path = "settings/" + filename
@@ -235,7 +235,7 @@ class ButtinskyXMLRPCServer(object):
         f = open(path, 'wb')
         f.write(config)
         f.close()
-        return ""
+        return filename + " created"
 
     def status(self):
         status = self.ml.getFile()
@@ -252,13 +252,13 @@ class ButtinskyXMLRPCServer(object):
         if not self.ml.getStack(identifier):
             raise Exception("Identifier " + identifier + " does not exist")
         self.queue.put([STOP_MONITOR, identifier, None])
-        return ""
+        return identifier + " stopped"
 
     def restart(self, identifier):
         if not self.ml.getStack(identifier):
             raise Exception("Identifier " + identifier + " does not exist")
         self.queue.put([RESTART_MONITOR, identifier, None])
-        return ""
+        return identifier + " restarted"
 
     def list(self, filename):
         f = open("settings/" + filename, "r")
@@ -267,7 +267,7 @@ class ButtinskyXMLRPCServer(object):
 
     def delete(self, filename):
         os.remove("settings/" + filename)
-        return ""
+        return filename + " deleted"
 
     def echo(self, msg):
         return "Msg recvd: " + msg
