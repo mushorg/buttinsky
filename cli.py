@@ -39,6 +39,8 @@ class CLI(cmd.Cmd):
         try:
             ret = self.conn.create(args[0], json.dumps(''.join(args[1])))
             print ret
+        except IndexError:
+            print "Not enough parameters: create <file> <conf>"
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
@@ -117,6 +119,8 @@ class CLI(cmd.Cmd):
             ret = self.conn.list(arg)
             print "\n\033[1;30mContents of " + arg + "\033[0m\n"
             print ret + "\n"
+        except IOError:
+            print "Invalid settings name. Use 'status' to get a list of available setting files."
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
@@ -127,6 +131,8 @@ class CLI(cmd.Cmd):
         """
         try:
             ret = self.conn.delete(arg)
+        except IOError:
+            print "Invalid settings name. Use 'status' to get a list of available setting files."
         except xmlrpclib.Fault as err:
             print "Command failed: ",
             print err
