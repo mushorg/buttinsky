@@ -9,7 +9,7 @@ import gevent
 
 from configobj import ConfigObj
 
-from modules.util import hpfeeds
+import hpfeeds
 from base_source import BaseSource
 
 

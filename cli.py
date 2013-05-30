@@ -214,7 +214,10 @@ def main():
         print err
         sys.exit(2)
 
-    CLI(conn).cmdloop()
+    try:
+        CLI(conn).cmdloop()
+    except SystemExit:
+        print "bye"
 
 if __name__ == "__main__":
     main()

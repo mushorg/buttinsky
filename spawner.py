@@ -286,4 +286,7 @@ if __name__ == '__main__':
     server.register_instance(ButtinskyXMLRPCServer(messageQueue))
     if buttinsky_config["hpfeeds"]["enabled"] == "True":
         gevent.spawn(ButtinskyXMLRPCServer(messageQueue).load_sink)
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print "Quitting... Bye!"
