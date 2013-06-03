@@ -261,8 +261,8 @@ class ButtinskyXMLRPCServer(object):
         return identifier + " restarted"
 
     def list(self, filename):
-        f = open("settings/" + filename, "r")
-        content = f.read()
+        with open("settings/" + filename, "rb") as f:
+            content = f.read()
         return content
 
     def delete(self, filename):
