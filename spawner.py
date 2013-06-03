@@ -2,6 +2,9 @@
 # Copyright (C) 2012 Buttinsky Developers.
 # See 'COPYING' for copying permission.
 
+from gevent.monkey import patch_all
+patch_all()
+
 import json
 import os
 import sys
@@ -22,6 +25,8 @@ group = gevent.pool.Group()
 #TODO : hpfeeds import to be removed when report_handler is ready
 import modules.reporting.hpfeeds_logger as hpfeeds
 import modules.sources.hpfeeds_sink as hpfeeds_sink
+
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 
 def singleton(cls):
@@ -57,7 +62,7 @@ class MonitorList(object):
         stack = None
         try:
             stack = self.__stackList[identifier]
-        except IndexError:
+        except (IndexError, KeyError):
             pass
         return stack
 
@@ -202,11 +207,6 @@ class MonitorSpawner(object):
             self.messageQueue.put([RESTART_MONITOR, identifier])
         else:
             self.messageQueue.put([STOP_MONITOR, identifier])
-
-
-from SimpleXMLRPCServer import SimpleXMLRPCServer
-from gevent.monkey import patch_all
-patch_all()
 
 
 class ButtinskyXMLRPCServer(object):
