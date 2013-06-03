@@ -6,9 +6,7 @@ import json
 import xmlrpclib
 
 import gevent
-
 from configobj import ConfigObj
-
 import hpfeeds
 from base_source import BaseSource
 
@@ -52,7 +50,6 @@ class HPFeedsSink(BaseSource):
         self.hpc.subscribe(self.buttinsky_config["hpfeeds"]["source_channel"])
         gevent.spawn(self.hpc.run(on_message, on_error))
         self.hpc.close()
-        return 0
 
 
 if __name__ == "__main__":
