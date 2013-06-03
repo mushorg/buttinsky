@@ -216,6 +216,8 @@ def main():
 
     try:
         CLI(conn).cmdloop()
+    except socket.error:
+        print server + ":" + port + " seems to be down :(\n"
     except SystemExit:
         print "bye"
 
