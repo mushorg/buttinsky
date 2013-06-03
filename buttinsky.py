@@ -7,8 +7,8 @@ import sys
 
 from configobj import ConfigObj
 
-from gevent.monkey import patch_all
-patch_all()
+import gevent.monkey
+gevent.monkey.patch_all()
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
@@ -20,6 +20,12 @@ import cli
 import gevent
 from gevent import queue
 
+import logging
+import logging.config
+
+logging.config.fileConfig('conf/logging.ini')
+logger = logging.getLogger(__name__)
+
 
 buttinsky_config = ConfigObj("conf/buttinsky.cfg")
 
@@ -27,6 +33,7 @@ buttinsky_config = ConfigObj("conf/buttinsky.cfg")
 class Buttinsky(object):
 
     def __init__(self):
+        logger.info("Starting Buttinsky")
         self.servers = []
         if not os.path.isfile("conf/buttinsky.cfg"):
             sys.exit("Modify and rename conf/buttinsky.cfg.dist to conf/buttinsky.cfg.")
@@ -36,8 +43,8 @@ class Buttinsky(object):
         buttinsky_config = ConfigObj("conf/buttinsky.cfg")
         hostname = buttinsky_config["xmlrpc"]["server"]
         port = int(buttinsky_config["xmlrpc"]["port"])
-        server = SimpleXMLRPCServer((hostname, port))
-        print "Listening on port 8000..."
+        server = SimpleXMLRPCServer((hostname, port), logRequests=False)
+        logger.debug("Listening on port 8000...")
         server.register_instance(ButtinskyXMLRPCServer(messageQueue))
         if buttinsky_config["hpfeeds"]["enabled"] == "True":
             gevent.spawn(ButtinskyXMLRPCServer(messageQueue).load_sink)
@@ -47,7 +54,7 @@ class Buttinsky(object):
             cli_thread.join()
             xmlrpc_server.kill()
         except (KeyboardInterrupt, SystemExit):
-            print "Quitting... Bye!"
+            logger.debug("Quitting... Bye!")
 
 
 if __name__ == "__main__":
