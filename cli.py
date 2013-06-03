@@ -218,7 +218,7 @@ def main():
         CLI(conn).cmdloop()
     except socket.error:
         print server + ":" + port + " seems to be down :(\n"
-    except SystemExit:
+    except (SystemExit, KeyboardInterrupt):
         print "bye"
 
 if __name__ == "__main__":
